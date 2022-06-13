@@ -47,30 +47,30 @@ public class MainScreen implements Initializable {
         System.out.println("Main Screen active");
         PartsTableView.setItems(partList);
         //Add parts to partList
-        partList.add(new Part(5689, "Screw", 7, 3.99));
-        partList.add(new Part(1124, "Wedge", 3, 55.99));
-        partList.add(new Part(7855, "Nut", 1, 8.99));
-        partList.add(new Part(4567, "Bun", 69, 1.99));
+        partList.add(new Part(5689, "Screw", 7.99, 10, 1, 20));
+        partList.add(new Part(1124, "Wedge", 3.88, 15, 1,20));
+        partList.add(new Part(7855, "Nut", 1.69, 8, 1, 20));
+        partList.add(new Part(4567, "Bun", 69.80, 1, 1, 20));
 
         //Parts table columns
-        PartIdColumn.setCellValueFactory(new PropertyValueFactory<>("partId"));
-        PartNameColumn.setCellValueFactory(new PropertyValueFactory<>("partName"));
-        PartInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("inventoryLevel"));
-        PartPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("pricePerUnit"));
-
+        PartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        PartNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        PartPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        PartInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         ProductsTableView.setItems(productList);
         //Add products to productList
-        productList.add(new Product(5689, "Branch", 17, 3.99));
-        productList.add(new Product(1124, "Cheese Wheel", 77, 55.99));
-        productList.add(new Product(7855, "Sandwich", 12, 8.99));
-        productList.add(new Product(4567, "Shovel", 9, 1.99));
+        productList.add(new Product(5689, "Branch", 17.99, 19, 1, 20));
+        productList.add(new Product(1124, "Cheese Wheel", 77.45, 17, 1, 20));
+        productList.add(new Product(7855, "Sandwich", 12.44, 9, 1, 20));
+        productList.add(new Product(4567, "Shovel", 9.21, 2, 1, 20));
 
         //Products columns
-        ProductIdColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
-        ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        ProductInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("inventoryLevel"));
-        ProductPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("pricePerUnit"));
+        ProductIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        ProductPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        ProductInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
     }
 
     public void OnExitButton(ActionEvent actionEvent) {

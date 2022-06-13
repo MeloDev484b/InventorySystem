@@ -3,47 +3,68 @@ package model;
 import javafx.collections.FXCollections;
 
 public class Part {
-    private int partId;
-    private String partName;
-    private int inventoryLevel;
-    private double pricePerUnit;
+    private int id;
+    private String name;
+    private double price;
+    private int stock;
+    private int min;
+    private int max;
 
-    public Part(int id, String name, int iLevel, double price) {
-        this.partId = id;
-        this.partName = name;
-        this.inventoryLevel = iLevel;
-        this.pricePerUnit = price;
+    public Part(int id, String name, double price, int stock, int min, int max) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.min = min;
+        this.max = max;
     }
 
-    public int getPartId() {
-        return partId;
+    public int getId() {
+        return id;
     }
 
-    public void setPartId(int partId) {
-        this.partId = partId;
+    public void setId(int partId) {
+        this.id = partId;
     }
 
-    public String getPartName() {
-        return partName;
+    public String getName() {
+        return name;
     }
 
-    public void setPartName(String partName) {
-        this.partName = partName;
+    public void setName(String partName) {
+        this.name = partName;
     }
 
-    public int getInventoryLevel() {
-        return inventoryLevel;
+    public double getPrice() {
+        return price;
     }
 
-    public void setInventoryLevel(int inventoryLevel) {
-        this.inventoryLevel = inventoryLevel;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public double getPricePerUnit() {
-        return pricePerUnit;
+    public int getStock() {
+        return stock;
     }
 
-    public void setPricePerUnit(double pricePerUnit) {
-        this.pricePerUnit = pricePerUnit;
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+
+    public int getMin() {
+        return min;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
     }
 }

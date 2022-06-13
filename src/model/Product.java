@@ -74,9 +74,10 @@ public class Product {
     public void addAssociatedPart(Part part) {
         associatedParts.add(part);
     }
-    public void deleteAssociatedPart(Part selectedAssociatedPart) {
-        //check if selected part exists first
+    // TODO check if part exists, return true after removing it
+    public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
         associatedParts.remove(selectedAssociatedPart);
+        return true;
     }
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;

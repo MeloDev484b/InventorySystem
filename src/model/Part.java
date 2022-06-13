@@ -2,7 +2,7 @@ package model;
 
 import javafx.collections.FXCollections;
 
-public class Part {
+public abstract class Part {
     private int id;
     private String name;
     private double price;

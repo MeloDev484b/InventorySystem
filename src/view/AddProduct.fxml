@@ -1,14 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.AddProduct"
-            prefHeight="480.0" prefWidth="720.0">
-
+<AnchorPane prefHeight="300.0" prefWidth="480.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddPart">
+    <children>
+        <VBox prefHeight="300.0" prefWidth="480.0">
+            <children>
+                <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="480.0">
+                    <children>
+                        <Label layoutX="14.0" layoutY="8.0" text="Add Product">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                        <RadioButton layoutX="108.0" layoutY="8.0" mnemonicParsing="false" text="RadioButton" />
+                        <RadioButton layoutX="205.0" layoutY="8.0" mnemonicParsing="false" text="RadioButton" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                    </VBox.margin>
+                </AnchorPane>
+                <AnchorPane prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="ID" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="Name" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="Inv" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="Price/Cost" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="Max" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                        <Label layoutX="258.0" layoutY="4.0" text="Min" />
+                        <TextField layoutX="304.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="4.0" text="Company Name" />
+                        <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </AnchorPane>
+                <AnchorPane prefHeight="25.0" prefWidth="200.0">
+                    <children>
+                        <Button layoutX="214.0" mnemonicParsing="false" text="Save" />
+                        <Button layoutX="291.0" mnemonicParsing="false" text="Cancel" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

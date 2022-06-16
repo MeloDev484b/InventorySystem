@@ -3,18 +3,24 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import model.Part;
 import model.Product;
 import model.InHouse;
 import model.Outsourced;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -80,8 +86,16 @@ public class Inventory implements Initializable {
         System.exit(0);
     }
 
-    public void OnAddPartButton(ActionEvent actionEvent) {
+    public void OnAddPartButton(ActionEvent event) throws IOException {
+        Stage stage;
+        Scene scene;
+
         System.out.println("Add part button pressed");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AddPart.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void OnDeletePartButton(ActionEvent actionEvent) {
@@ -92,8 +106,16 @@ public class Inventory implements Initializable {
         System.out.println("Modify part button pressed");
     }
 
-    public void OnAddProductButton(ActionEvent actionEvent) {
+    public void OnAddProductButton(ActionEvent event) throws IOException{
+        Stage stage;
+        Scene scene;
+
         System.out.println("Add product button pressed");
+        Parent root = FXMLLoader.load(getClass().getResource("/view/AddProduct.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void OnDeleteProductButton(ActionEvent actionEvent) {
@@ -105,11 +127,11 @@ public class Inventory implements Initializable {
     }
 
     // TODO add functionality to member functions
-    public void addPart() {
-
+    public void addPart(Part newPart) {
+        allParts.add(newPart);
     }
-    public void addProduct() {
-
+    public void addProduct(Product newProduct) {
+        allProducts.add(newProduct);
     }
 
     public void lookupPart(int partId) {

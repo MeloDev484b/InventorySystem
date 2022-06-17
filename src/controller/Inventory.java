@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Part;
@@ -25,6 +26,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Inventory implements Initializable {
+    // set stage for add parts
+    Stage addPartStage = new Stage();
+    Scene addPartScene;
+
+    public static Part passedData;
     public Button ExitButton;
     public AnchorPane PartsAnchorPane;
     public TableView PartsTableView;
@@ -46,7 +52,7 @@ public class Inventory implements Initializable {
     public Button ModifyProductButton;
     public TextField SearchProductsTextField;
 
-    private ObservableList <Part> allParts = FXCollections.observableArrayList();
+    private static ObservableList <Part> allParts = FXCollections.observableArrayList();
 
     private ObservableList <Product> allProducts = FXCollections.observableArrayList();
 
@@ -81,32 +87,30 @@ public class Inventory implements Initializable {
 
     }
 
-    public void OnExitButton(ActionEvent actionEvent) {
+    public void onExitButton(ActionEvent actionEvent) {
         System.out.println("Exit button pressed");
         System.exit(0);
     }
 
-    public void OnAddPartButton(ActionEvent event) throws IOException {
-        Stage stage;
-        Scene scene;
 
+    public void onAddPartButton(ActionEvent event) throws IOException {
         System.out.println("Add part button pressed");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AddPart.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader loadAddPart = new FXMLLoader(getClass().getResource("/view/AddPart.fxml"));
+        Parent root1 = loadAddPart.load();
+        addPartScene = new Scene(root1);
+        addPartStage.setScene(addPartScene);
+        addPartStage.show();
     }
 
-    public void OnDeletePartButton(ActionEvent actionEvent) {
+    public void onDeletePartButton(ActionEvent actionEvent) {
         System.out.println("Delete part button pressed");
     }
 
-    public void OnModifyPartButton(ActionEvent actionEvent) {
+    public void onModifyPartButton(ActionEvent actionEvent) {
         System.out.println("Modify part button pressed");
     }
 
-    public void OnAddProductButton(ActionEvent event) throws IOException{
+    public void onAddProductButton(ActionEvent event) throws IOException{
         Stage stage;
         Scene scene;
 
@@ -118,24 +122,26 @@ public class Inventory implements Initializable {
         stage.show();
     }
 
-    public void OnDeleteProductButton(ActionEvent actionEvent) {
+    public void onDeleteProductButton(ActionEvent actionEvent) {
         System.out.println("Delete product button pressed");
     }
 
-    public void OnModifyProductButton(ActionEvent actionEvent) {
+    public void onModifyProductButton(ActionEvent actionEvent) {
         System.out.println("Modify product button pressed");
     }
 
     // TODO add functionality to member functions
-    public void addPart(Part newPart) {
-        allParts.add(newPart);
+    public static void addPart(Part newPart) {
+        passedData = newPart;
+        allParts.add(passedData);
     }
     public void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
 
     public void lookupPart(int partId) {
-        // TODO returns Part from int partId
+        ObservableList <Part> searchedPart = FXCollections.observableArrayList();
+
     }
 
     public void lookupProducts(int productId) {
@@ -168,11 +174,16 @@ public class Inventory implements Initializable {
         return true;
     }
 
-    public void getAllParts() {
-        // TODO Return ObservableList <Part>
+    public ObservableList getAllParts() {
+        return allParts;
     }
-    public void getAllProducts() {
-        // TODO Return ObservableList <Products>
+    public ObservableList getAllProducts() {
+        return allProducts;
     }
 
+    public void onSearchPartsTextChanged(InputMethodEvent inputMethodEvent) {
+    }
+
+    public void onSearchProductsTextChanged(InputMethodEvent inputMethodEvent) {
+    }
 }

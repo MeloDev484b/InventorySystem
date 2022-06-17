@@ -16,8 +16,11 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <RadioButton layoutX="108.0" layoutY="8.0" mnemonicParsing="false" text="RadioButton" />
-                  <RadioButton layoutX="205.0" layoutY="8.0" mnemonicParsing="false" text="RadioButton" />
+                  <RadioButton fx:id="InHouseRadio" layoutX="112.0" layoutY="8.0" mnemonicParsing="false" onAction="#onRadioSelect" text="In House">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="origin" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="OutsourcedRadio" layoutX="198.0" layoutY="8.0" mnemonicParsing="false" onAction="#onRadioSelect" text="Outsourced" toggleGroup="$origin" />
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" top="20.0" />
@@ -26,39 +29,39 @@
             <AnchorPane prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="ID" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="IdField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="Name" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="NameField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="Inv" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="InvField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="Price/Cost" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="PriceCostField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="Max" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="MaxField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                   <Label layoutX="258.0" layoutY="4.0" text="Min" />
-                  <TextField layoutX="304.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="MinField" layoutX="304.0" layoutY="1.0" scaleX="0.75" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
                <children>
-                  <Label layoutX="18.0" layoutY="4.0" text="Machine ID" />
-                  <TextField layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <Label fx:id="InOutLabel" layoutX="18.0" layoutY="4.0" text="Machine ID" />
+                  <TextField fx:id="MachineIdField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" />
@@ -66,8 +69,8 @@
             </AnchorPane>
             <AnchorPane prefHeight="25.0" prefWidth="200.0">
                <children>
-                  <Button layoutX="214.0" mnemonicParsing="false" text="Save" />
-                  <Button layoutX="291.0" mnemonicParsing="false" text="Cancel" />
+                  <Button fx:id="SaveButton" layoutX="214.0" mnemonicParsing="false" onAction="#onSaveButton" text="Save" />
+                  <Button fx:id="CancelButton" layoutX="291.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
                </children>
             </AnchorPane>
          </children>

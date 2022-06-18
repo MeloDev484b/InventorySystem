@@ -29,32 +29,23 @@ public class Inventory implements Initializable {
     // set stage for add parts
     Stage addPartStage = new Stage();
     Scene addPartScene;
-
-    public static Part passedData;
+    // set stage for modify parts
+    Stage modifyPartStage = new Stage();
+    Scene modifyPartScene;
     public Button ExitButton;
     public AnchorPane PartsAnchorPane;
     public TableView PartsTableView;
-    public TableColumn PartIdColumn;
-    public TableColumn PartNameColumn;
-    public TableColumn PartInventoryLevelColumn;
-    public TableColumn PartPricePerUnitColumn;
-    public Button AddPartButton;
-    public Button DeletePartButton;
-    public Button ModifyPartButton;
+    public TableColumn PartIdColumn, PartNameColumn, PartInventoryLevelColumn, PartPricePerUnitColumn;
+    public Button AddPartButton, DeletePartButton, ModifyPartButton;
     public TextField SearchPartsTextField;
     public TableView ProductsTableView;
-    public TableColumn ProductIdColumn;
-    public TableColumn ProductNameColumn;
-    public TableColumn ProductInventoryLevelColumn;
-    public TableColumn ProductPricePerUnitColumn;
-    public Button AddProductButton;
-    public Button DeleteProductButton;
-    public Button ModifyProductButton;
+    public TableColumn ProductIdColumn, ProductNameColumn, ProductInventoryLevelColumn, ProductPricePerUnitColumn;
+    public Button AddProductButton, DeleteProductButton, ModifyProductButton;
     public TextField SearchProductsTextField;
 
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
 
-    private ObservableList <Product> allProducts = FXCollections.observableArrayList();
+    private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -96,82 +87,77 @@ public class Inventory implements Initializable {
     public void onAddPartButton(ActionEvent event) throws IOException {
         System.out.println("Add part button pressed");
         FXMLLoader loadAddPart = new FXMLLoader(getClass().getResource("/view/AddPart.fxml"));
-        Parent root1 = loadAddPart.load();
-        addPartScene = new Scene(root1);
+        Parent root = loadAddPart.load();
+        addPartScene = new Scene(root);
         addPartStage.setScene(addPartScene);
         addPartStage.show();
     }
 
     public void onDeletePartButton(ActionEvent actionEvent) {
         System.out.println("Delete part button pressed");
+        deletePart(selectFromTable());
     }
 
-    public void onModifyPartButton(ActionEvent actionEvent) {
+    public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
         System.out.println("Modify part button pressed");
+        FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
+        Parent root = loadModifyPart.load();
+        modifyPartScene = new Scene(root);
+        modifyPartStage.setScene(modifyPartScene);
+        modifyPartStage.show();
     }
 
     public void onAddProductButton(ActionEvent event) throws IOException{
-        Stage stage;
-        Scene scene;
-
-        System.out.println("Add product button pressed");
-        Parent root = FXMLLoader.load(getClass().getResource("/view/AddProduct.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        // TODO make this button open AddProduct.fxml
     }
 
     public void onDeleteProductButton(ActionEvent actionEvent) {
         System.out.println("Delete product button pressed");
+
     }
 
     public void onModifyProductButton(ActionEvent actionEvent) {
         System.out.println("Modify product button pressed");
     }
 
-    // TODO add functionality to member functions
     public static void addPart(Part newPart) {
-        passedData = newPart;
-        allParts.add(passedData);
+        allParts.add(newPart);
     }
-    public void addProduct(Product newProduct) {
+    public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
 
-    public void lookupPart(int partId) {
+    public static void lookupPart(int partId) {
         ObservableList <Part> searchedPart = FXCollections.observableArrayList();
 
     }
 
-    public void lookupProducts(int productId) {
+    public static void lookupProducts(int productId) {
         // TODO returns Product from int productId
     }
 
-    public void lookupPart(String partName) {
+    public static void lookupPart(String partName) {
         // TODO returns ObservableList <Part> from String name
     }
 
-    public void lookupProducts(String productName) {
+    public static void lookupProducts(String productName) {
         // TODO returns ObservableList <Product> from String name
     }
 
-    public void updatePart(int index, Part selectedPart) {
+    public static void updatePart(int index, Part selectedPart) {
         // TODO update Part
     }
 
-    public void updateProduct(int index, Product newProduct) {
+    public static void updateProduct(int index, Product newProduct) {
         // TODO update Product
     }
 
-    public boolean deletePart(Part selectedPart) {
-        // TODO return true if Part exists and is removed
-        return true;
+    public static boolean deletePart(Part deleteMe) {
+        return allParts.remove(deleteMe);
     }
 
-    public boolean deleteProduct(Product selectedProduct) {
-        // TODO return true if Product exists and is removed
-        return true;
+    public static boolean deleteProduct(Product deleteMe) {
+        return allProducts.remove(deleteMe);
     }
 
     public ObservableList getAllParts() {
@@ -182,8 +168,13 @@ public class Inventory implements Initializable {
     }
 
     public void onSearchPartsTextChanged(InputMethodEvent inputMethodEvent) {
+
     }
 
     public void onSearchProductsTextChanged(InputMethodEvent inputMethodEvent) {
+    }
+
+    public Part selectFromTable() {
+            return (Part) PartsTableView.getSelectionModel().getSelectedItem();
     }
 }

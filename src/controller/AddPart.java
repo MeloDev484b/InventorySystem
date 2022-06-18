@@ -20,16 +20,8 @@ import java.util.ResourceBundle;
 public class AddPart implements Initializable {
     public RadioButton InHouseRadio;
     public RadioButton OutsourcedRadio;
-    public TextField IdField;
-    public TextField NameField;
-    public TextField InvField;
-    public TextField PriceCostField;
-    public TextField MaxField;
-    public TextField MinField;
-    public TextField MachineIdField;
-
-    public Button SaveButton;
-    public Button CancelButton;
+    public TextField IdField, NameField, InvField, PriceCostField, MaxField, MinField, MachineIdField;
+    public Button SaveButton, CancelButton;
     public Label InOutLabel;
 
     @Override
@@ -49,13 +41,11 @@ public class AddPart implements Initializable {
 
         if (inHouse) {
             int machineId = Integer.parseInt(InOutLabel.getText());
-            InHouse newPart = new InHouse(id, name, price, stock, min, max, machineId);
-            Inventory.addPart(newPart);
+            Inventory.addPart(new InHouse(id, name, price, stock, min, max, machineId));
         }
         else {
             String companyName = InOutLabel.getText();
-            Outsourced newPart = new Outsourced(id, name, price, stock, min, max, companyName);
-            Inventory.addPart(newPart);
+            Inventory.addPart(new Outsourced(id, name, price, stock, min, max, companyName));
         }
         closeWindow();
     }

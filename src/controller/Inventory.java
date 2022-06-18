@@ -2,6 +2,7 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +25,7 @@ import model.Outsourced;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Inventory implements Initializable {
@@ -82,88 +84,67 @@ public class Inventory implements Initializable {
 
     }
 
-    public void onExitButton(ActionEvent actionEvent) {
-        System.out.println("Exit button pressed");
-        System.exit(0);
-    }
-
-
-    public void onAddPartButton(ActionEvent event) throws IOException {
-        System.out.println("Add part button pressed");
-        FXMLLoader loadAddPart = new FXMLLoader(getClass().getResource("/view/AddPart.fxml"));
-        Parent root = loadAddPart.load();
-        addPartScene = new Scene(root);
-        addPartStage.setScene(addPartScene);
-        addPartStage.show();
-    }
-
-    public void onDeletePartButton(ActionEvent actionEvent) {
-        System.out.println("Delete part button pressed");
-        deletePart(selectedPart);
-    }
-
-    public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
-        System.out.println("Modify part button pressed");
-        FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
-        Parent root = loadModifyPart.load();
-        modifyPartScene = new Scene(root);
-        modifyPartStage.setScene(modifyPartScene);
-        modifyPartStage.show();
-    }
-
-    public void onAddProductButton(ActionEvent event) throws IOException{
-        // TODO make this button open AddProduct.fxml
-    }
-
-    public void onDeleteProductButton(ActionEvent actionEvent) {
-        System.out.println("Delete product button pressed");
-
-    }
-
-    public void onModifyProductButton(ActionEvent actionEvent) {
-        System.out.println("Modify product button pressed");
-    }
-
+    // TODO last task: add try/catch, validate input, comment blocks everywhere
+    // UML-specified methods
     public static void addPart(Part newPart) {
         allParts.add(newPart);
     }
     public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
-
-    public static void lookupPart(int partId) {
-        ObservableList <Part> searchedPart = FXCollections.observableArrayList();
-
+    public Part lookupPart(int partId) {
+        // TODO 1. Test this
+        ObservableList <Part> foundParts = getAllParts();
+        for (Part part : foundParts) {
+            if (part.getId() == partId) {
+                return part;
+            }
+        }
+        return null;
     }
-
-    public static void lookupProducts(int productId) {
-        // TODO returns Product from int productId
+    public Product lookupProduct(int productId) {
+        // TODO 2. Test this
+        ObservableList <Product> foundProducts = getAllProducts();
+        for (Product product : foundProducts) {
+            if (product.getId() == productId) {
+                return product;
+            }
+        }
+        return null;
     }
-
-    public static void lookupPart(String partName) {
-        // TODO returns ObservableList <Part> from String name
+    public ObservableList<Part> lookupPart(String partName) {
+        // TODO 3. Test this
+        ObservableList <Part> allParts = getAllParts();
+        ObservableList <Part> foundParts = FXCollections.observableArrayList();
+        for (Part part : allParts) {
+            if (part.getName().toLowerCase(Locale.ROOT).contains(partName.toLowerCase(Locale.ROOT))) {
+                foundParts.add(part);
+            }
+        }
+        return foundParts;
     }
-
-    public static void lookupProducts(String productName) {
-        // TODO returns ObservableList <Product> from String name
+    public ObservableList<Product> lookupProduct(String productName) {
+        // TODO 4. Test this
+        ObservableList <Product> foundProducts = getAllProducts();
+        for (Product product : foundProducts) {
+            if (product.getName() != productName) {
+                foundProducts.remove(product);
+            }
+        }
+        return foundProducts;
     }
-
-    public static void updatePart(int index, Part selectedPart) {
-        allParts.set(index, selectedPart);
+    public static void updatePart(int index, Part updatedPart) {
+        allParts.set(index, updatedPart);
     }
-
-    public static void updateProduct(int index, Product newProduct) {
-        // TODO update Product
+    public static void updateProduct(int index, Product updatedProduct) {
+        allProducts.set(index, updatedProduct);
     }
-
     public static boolean deletePart(Part deleteMe) {
         return allParts.remove(deleteMe);
     }
-
     public static boolean deleteProduct(Product deleteMe) {
         return allProducts.remove(deleteMe);
     }
-
     public ObservableList getAllParts() {
         return allParts;
     }
@@ -171,13 +152,7 @@ public class Inventory implements Initializable {
         return allProducts;
     }
 
-    public void onSearchPartsTextChanged(InputMethodEvent inputMethodEvent) {
-
-    }
-
-    public void onSearchProductsTextChanged(InputMethodEvent inputMethodEvent) {
-    }
-
+    // Helper methods
     public static int getIndex(Part part) {
         return allParts.indexOf(part);
     }
@@ -187,8 +162,75 @@ public class Inventory implements Initializable {
     public void setSelectedPart() {
         selectedPart = (Part) PartsTableView.getSelectionModel().getSelectedItem();
     }
+    public void setSelectedProduct() {
+        selectedProduct = (Product) ProductsTableView.getSelectionModel().getSelectedItem();
+    }
 
+    // fxml methods
+    public void onExitButton(ActionEvent actionEvent) {
+        System.out.println("Exit button pressed");
+        System.exit(0);
+    }
+    public void onAddPartButton(ActionEvent event) throws IOException {
+        System.out.println("Add part button pressed");
+        FXMLLoader loadAddPart = new FXMLLoader(getClass().getResource("/view/AddPart.fxml"));
+        Parent root = loadAddPart.load();
+        addPartScene = new Scene(root);
+        addPartStage.setScene(addPartScene);
+        addPartStage.show();
+    }
+    public void onDeletePartButton(ActionEvent actionEvent) {
+        System.out.println("Delete part button pressed");
+        deletePart(selectedPart);
+    }
+    public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
+        System.out.println("Modify part button pressed");
+        FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
+        Parent root = loadModifyPart.load();
+        modifyPartScene = new Scene(root);
+        modifyPartStage.setScene(modifyPartScene);
+        modifyPartStage.show();
+    }
+    public void onAddProductButton(ActionEvent event) throws IOException{
+        FXMLLoader loadAddProduct = new FXMLLoader(getClass().getResource("/view/AddProduct.fxml"));
+        Parent root = loadAddProduct.load();
+        modifyPartScene = new Scene(root);
+        modifyPartStage.setScene(modifyPartScene);
+        modifyPartStage.show();
+    }
+    public void onProductsTableViewClick(MouseEvent mouseEvent) {
+        setSelectedProduct();
+    }
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
         setSelectedPart();
     }
+    public void onDeleteProductButton(ActionEvent actionEvent) {
+        System.out.println("Delete product button pressed");
+
+    }
+    public void onModifyProductButton(ActionEvent actionEvent) {
+        System.out.println("Modify product button pressed");
+    }
+
+    public void onSearchPartsButton(ActionEvent actionEvent) {
+        //TODO 5. PartsTableView.setItems(searchedPartsList);
+        if (SearchPartsTextField.getText().matches("\\d+")) {
+            ObservableList <Part> temp = FXCollections.observableArrayList();
+            temp.add(lookupPart(Integer.parseInt(SearchPartsTextField.getText())));
+            PartsTableView.setItems(temp);
+        }
+        else if (SearchPartsTextField.getText().matches(".")) {
+            ObservableList <Part> foundParts = lookupPart(SearchPartsTextField.getText());
+            PartsTableView.setItems(foundParts);
+        }
+        else {
+            System.out.println("Not found.");
+            PartsTableView.setItems(allParts);
+        }
+    }
+
+    public void onSearchProductsButton(ActionEvent actionEvent) {
+        //TODO 6. ProductsTableView.setItems(searchedProductsList);
+    }
 }
+

@@ -16,7 +16,7 @@
       <AnchorPane fx:id="PartsAnchorPane" layoutX="14.0" layoutY="135.0" prefHeight="290.0" prefWidth="440.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d3eaff" height="290.0" stroke="BLACK" strokeType="INSIDE" width="440.0" />
-            <TableView fx:id="PartsTableView" editable="true" layoutX="20.0" layoutY="45.0" prefHeight="200.0" prefWidth="400.0">
+            <TableView fx:id="PartsTableView" editable="true" layoutX="20.0" layoutY="45.0" onMouseClicked="#onPartsTableViewClick" prefHeight="200.0" prefWidth="400.0">
                <columns>
                   <TableColumn fx:id="PartIdColumn" prefWidth="112.0" text="Part ID" />
                   <TableColumn fx:id="PartNameColumn" prefWidth="88.0" text="Part Name" />

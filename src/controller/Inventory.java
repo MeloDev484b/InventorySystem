@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Part;
@@ -46,6 +47,9 @@ public class Inventory implements Initializable {
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
 
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
+
+    public static Part selectedPart;
+    public static Product selectedProduct;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,7 +99,7 @@ public class Inventory implements Initializable {
 
     public void onDeletePartButton(ActionEvent actionEvent) {
         System.out.println("Delete part button pressed");
-        deletePart(selectFromTable());
+        deletePart(selectedPart);
     }
 
     public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
@@ -145,7 +149,7 @@ public class Inventory implements Initializable {
     }
 
     public static void updatePart(int index, Part selectedPart) {
-        // TODO update Part
+        allParts.set(index, selectedPart);
     }
 
     public static void updateProduct(int index, Product newProduct) {
@@ -174,7 +178,17 @@ public class Inventory implements Initializable {
     public void onSearchProductsTextChanged(InputMethodEvent inputMethodEvent) {
     }
 
-    public Part selectFromTable() {
-            return (Part) PartsTableView.getSelectionModel().getSelectedItem();
+    public static int getIndex(Part part) {
+        return allParts.indexOf(part);
+    }
+    public static Part getPart(int index) {
+        return allParts.get(index);
+    }
+    public void setSelectedPart() {
+        selectedPart = (Part) PartsTableView.getSelectionModel().getSelectedItem();
+    }
+
+    public void onPartsTableViewClick(MouseEvent mouseEvent) {
+        setSelectedPart();
     }
 }

@@ -3,6 +3,7 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -38,16 +39,21 @@ public class Inventory implements Initializable {
     // set stage for modify parts
     Stage modifyPartStage = new Stage();
     Scene modifyPartScene;
+    // set stage for add products
+    Stage addProductStage = new Stage();
+    Scene addProductScene;
+    // set stage for modify products
+    Stage modifyProductStage = new Stage();
+    Scene modifyProductScene;
     public Button ExitButton;
     public AnchorPane PartsAnchorPane;
     public TableView PartsTableView;
     public TableColumn PartIdColumn, PartNameColumn, PartInventoryLevelColumn, PartPricePerUnitColumn;
     public Button AddPartButton, DeletePartButton, ModifyPartButton;
-    public TextField SearchPartsTextField;
+    public TextField SearchPartsTextField, SearchProductsTextField;
     public TableView ProductsTableView;
     public TableColumn ProductIdColumn, ProductNameColumn, ProductInventoryLevelColumn, ProductPricePerUnitColumn;
     public Button AddProductButton, DeleteProductButton, ModifyProductButton;
-    public TextField SearchProductsTextField;
 
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
@@ -62,31 +68,27 @@ public class Inventory implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Wrap allParts in a FilteredList
-        FilteredList <Part> filteredParts = new FilteredList<>(allParts, p -> true);
-
         System.out.println("Main Screen active");
-        PartsTableView.setItems(allParts);
-        //Add parts to allParts
+        wrapLists();
+        //Add test Parts to allParts
         allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
         allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
         allParts.add(new Outsourced(7855, "Nut", 1.69, 8, 1, 20, "A Company"));
         allParts.add(new Outsourced(4567, "Bun", 69.80, 1, 1, 20, "Generic Cola"));
 
-        //Parts table columns
+        //Set Parts table columns
         PartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         PartNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         PartPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         PartInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
-        ProductsTableView.setItems(allProducts);
-        //Add products to allProducts
+        //Add test Products to allProducts
         allProducts.add(new Product(3456, "Branch", 17.99, 19, 1, 20));
         allProducts.add(new Product(3466, "Cheese Wheel", 77.45, 17, 1, 20));
         allProducts.add(new Product(7688, "Sandwich", 12.44, 9, 1, 20));
         allProducts.add(new Product(9240, "Shovel", 9.21, 2, 1, 20));
 
-        //Products columns
+        //Set Products columns
         ProductIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         ProductPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -251,6 +253,69 @@ public class Inventory implements Initializable {
         selectedProduct = (Product) ProductsTableView.getSelectionModel().getSelectedItem();
     }
 
+    public void lookup() {
+        if (SearchPartsTextField.getText().matches("^\\d+$")) {
+            ObservableList <Part> temp = FXCollections.observableArrayList();
+            temp.add(lookupPart(Integer.parseInt(SearchPartsTextField.getText())));
+            PartsTableView.setItems(temp);
+        }
+        // TODO come back to this...we've got work to do
+        else if (SearchPartsTextField.getText().matches(".*?")) {
+            ObservableList <Part> foundParts = lookupPart(SearchPartsTextField.getText());
+            for (Part part : allParts) {
+                PartsTableView.getSelectionModel().select((allParts.indexOf(foundParts.get(getIndex(part)).getName())));
+            }
+        }
+        else {
+            System.out.println("Not found.");
+            PartsTableView.setItems(allParts);
+        }
+    }
+    /*
+    Allows search functionality by wrapping allParts and allProducts in a FilteredList. Filter predicate is set
+    when the filter changes. The FilteredList is wrapped in a SortedList. The SortedList comparator
+    is bound to the TableView comparator. Finally, the TableViews are set to the appropriate SortedList.
+    Source: https://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
+    */
+    private void wrapLists() {
+        FilteredList <Part> filteredParts = new FilteredList<>(allParts, p -> true);
+        SearchPartsTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredParts.setPredicate(Part -> {
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (Part.getName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+
+            });
+        });
+        SortedList <Part> sortedParts = new SortedList<>(filteredParts);
+        sortedParts.comparatorProperty().bind(PartsTableView.comparatorProperty());
+        PartsTableView.setItems(sortedParts);
+
+        FilteredList <Product> filteredProducts = new FilteredList<>(allProducts, p -> true);
+        SearchProductsTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredProducts.setPredicate(Product -> {
+                if (newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (Product.getName().toLowerCase().contains(lowerCaseFilter)) {
+                    return true;
+                }
+                return false;
+
+            });
+        });
+        SortedList <Product> sortedProducts = new SortedList<>(filteredProducts);
+        sortedProducts.comparatorProperty().bind(ProductsTableView.comparatorProperty());
+        ProductsTableView.setItems(sortedProducts);
+    }
+
+
     // fxml methods
     /*
     Uses System.exit() to exit the application
@@ -322,44 +387,19 @@ public class Inventory implements Initializable {
     */
     public void onDeleteProductButton(ActionEvent actionEvent) {
         System.out.println("Delete product button pressed");
-
+        deleteProduct(selectedProduct);
     }
 
     /*
-    Calls modifyProduct() on the selectedProduct when the user clicks the modifyProductButton.
+    Loads and displays the ModifyProduct GUI.
     */
-    public void onModifyProductButton(ActionEvent actionEvent) {
+    public void onModifyProductButton(ActionEvent actionEvent) throws IOException {
         System.out.println("Modify product button pressed");
-    }
-
-    /*
-    Searches allParts and displays allParts as a FilteredList. Not currently functional.
-    */
-    public void onSearchPartsButton(ActionEvent actionEvent) {
-        //TODO 5. PartsTableView.setItems(searchedPartsList);
-        if (SearchPartsTextField.getText().matches("^\\d+$")) {
-            ObservableList <Part> temp = FXCollections.observableArrayList();
-            temp.add(lookupPart(Integer.parseInt(SearchPartsTextField.getText())));
-            PartsTableView.setItems(temp);
-        }
-        // TODO come back to this...we've got work to do
-        else if (SearchPartsTextField.getText().matches(".*?")) {
-            ObservableList <Part> foundParts = lookupPart(SearchPartsTextField.getText());
-            for (Part part : allParts) {
-                PartsTableView.getSelectionModel().select((allParts.indexOf(foundParts.get(getIndex(part)).getName())));
-            }
-        }
-        else {
-            System.out.println("Not found.");
-            PartsTableView.setItems(allParts);
-        }
-    }
-
-    /*
-    Searches allProducts and displays allProducts as a FilteredList. Not currently functional.
-    */
-    public void onSearchProductsButton(ActionEvent actionEvent) {
-        //TODO 6. ProductsTableView.setItems(searchedProductsList);
+        FXMLLoader loadModifyProduct = new FXMLLoader(getClass().getResource("/view/ModifyProduct.fxml"));
+        Parent root = loadModifyProduct.load();
+        modifyProductScene = new Scene(root);
+        modifyProductStage.setScene(modifyProductScene);
+        modifyProductStage.show();
     }
 }
 

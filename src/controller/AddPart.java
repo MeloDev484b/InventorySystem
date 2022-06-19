@@ -32,12 +32,12 @@ public class AddPart implements Initializable {
 
     /*
     Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create either
-    an inHouse or Outsourced object. After the Part is added to allParts, the window is closed.
+    an inHouse or Outsourced object. After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
     */
     public void onSaveButton(ActionEvent actionEvent) {
         boolean inHouse = InHouseRadio.isSelected();
         boolean outsourced = OutsourcedRadio.isSelected();
-        int id = Integer.parseInt(IdField.getText()); // TODO ID generation function
+        int id = Inventory.partId;
         String name = NameField.getText();
         double price = Double.parseDouble(PriceCostField.getText());
         int stock = Integer.parseInt(InvField.getText());
@@ -52,6 +52,7 @@ public class AddPart implements Initializable {
             String companyName = InOutLabel.getText();
             Inventory.addPart(new Outsourced(id, name, price, stock, min, max, companyName));
         }
+        Inventory.incrementId(0);
         closeWindow();
     }
 

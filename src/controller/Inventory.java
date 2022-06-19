@@ -50,11 +50,12 @@ public class Inventory implements Initializable {
     public TextField SearchProductsTextField;
 
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
-
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
 
     public static Part selectedPart;
     public static Product selectedProduct;
+    public static int partId = 1000;
+    public static int productId = 1000;
 
     /*
     Initializes allParts and allProducts and sets the respective TableView to display the objects they contain.
@@ -209,6 +210,19 @@ public class Inventory implements Initializable {
     }
 
     // Helper methods
+    /*
+    When supplied int value of 0, partId is incremented and returned, when supplied an int value of 1
+    productId is incremented and returned.
+    */
+    public static int incrementId(int selection) {
+        if (selection == 0) {
+            return partId++;
+        }
+        else {
+            return productId++;
+        }
+    }
+
     /*
     Uses ObservableList.indexOf() to return an integer index of the specified Part.
     */

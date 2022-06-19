@@ -29,7 +29,7 @@
             <AnchorPane prefHeight="25.0" prefWidth="200.0">
                <children>
                   <Label layoutX="18.0" layoutY="4.0" text="ID" />
-                  <TextField fx:id="IdField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <TextField fx:id="IdField" editable="false" layoutX="90.0" layoutY="1.0" opacity="0.75" scaleX="0.75" text="Auto-generated" />
                </children>
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">

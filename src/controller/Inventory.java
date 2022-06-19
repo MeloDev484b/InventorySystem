@@ -101,12 +101,14 @@ public class Inventory implements Initializable {
     public static void addPart(Part newPart) {
         allParts.add(newPart);
     }
+
     /*
     Uses ObservableList.add() to add a Product object to allProducts.
     */
     public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
+
     /*
     Returns a Part contained in allParts that matches the supplied partId integer argument.
     */
@@ -120,6 +122,7 @@ public class Inventory implements Initializable {
         }
         return null;
     }
+
     /*
     Returns a Product contained in allProducts that matches the supplied productId integer argument.
     */
@@ -133,6 +136,7 @@ public class Inventory implements Initializable {
         }
         return null;
     }
+
     /*
     Returns an ObservableList of Parts that match the partName.
     */
@@ -147,6 +151,7 @@ public class Inventory implements Initializable {
         }
         return foundParts;
     }
+
     /*
     Returns an ObservableList of Products that match the productName.
     */
@@ -160,36 +165,42 @@ public class Inventory implements Initializable {
         }
         return foundProducts;
     }
+
     /*
     Uses ObservableList.set() to replace a Part in allParts, at the specified index.
     */
     public static void updatePart(int index, Part updatedPart) {
         allParts.set(index, updatedPart);
     }
+
     /*
     Uses ObservableList.set() to replace a Product in allProducts, at the specified index.
     */
     public static void updateProduct(int index, Product updatedProduct) {
         allProducts.set(index, updatedProduct);
     }
+
     /*
     Uses ObservableList.remove() to delete a Part in allParts. Returns true if the Part is deleted.
     */
     public static boolean deletePart(Part deleteMe) {
         return allParts.remove(deleteMe);
     }
+
     /*
     Uses ObservableList.remove() to delete a Product in allProducts. Returns true if the Product is deleted.
     */
     public static boolean deleteProduct(Product deleteMe) {
         return allProducts.remove(deleteMe);
     }
+
     /*
     Getter that returns the ObservableList allParts.
     */
     public ObservableList getAllParts() {
         return allParts;
     }
+
     /*
     Getter that returns the ObservableList allProducts.
     */
@@ -204,18 +215,21 @@ public class Inventory implements Initializable {
     public static int getIndex(Part part) {
         return allParts.indexOf(part);
     }
+
     /*
     Uses ObservableList.get() to return a Part at the specified index.
     */
     public static Part getPart(int index) {
         return allParts.get(index);
     }
+
     /*
     Sets selectedPart to the Part that the user clicks in the PartsTableView.
     */
     public void setSelectedPart() {
         selectedPart = (Part) PartsTableView.getSelectionModel().getSelectedItem();
     }
+
     /*
     Sets selectedProduct to the Product that the user clicks in the PartsTableView.
     */
@@ -231,6 +245,7 @@ public class Inventory implements Initializable {
         System.out.println("Exit button pressed");
         System.exit(0);
     }
+
     /*
     Loads and displays the AddPart GUI.
     */
@@ -242,6 +257,7 @@ public class Inventory implements Initializable {
         addPartStage.setScene(addPartScene);
         addPartStage.show();
     }
+
     /*
     Calls deletePart() on the selectedPart when the user clicks the deletePartButton.
     */
@@ -249,6 +265,7 @@ public class Inventory implements Initializable {
         System.out.println("Delete part button pressed");
         deletePart(selectedPart);
     }
+
     /*
     Loads and displays the ModifyPart GUI.
     */
@@ -260,6 +277,7 @@ public class Inventory implements Initializable {
         modifyPartStage.setScene(modifyPartScene);
         modifyPartStage.show();
     }
+
     /*
     Loads and displays the AddProduct GUI.
     */
@@ -270,18 +288,21 @@ public class Inventory implements Initializable {
         modifyPartStage.setScene(modifyPartScene);
         modifyPartStage.show();
     }
+
     /*
     Calls setSelectedProduct() when the user clicks on the ProductsTableView.
     */
     public void onProductsTableViewClick(MouseEvent mouseEvent) {
         setSelectedProduct();
     }
+
     /*
     Calls setSelectedPart() when the user clicks on the PartsTableView.
     */
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
         setSelectedPart();
     }
+
     /*
     Calls deleteProduct() on the selectedProduct when the user clicks the deleteProductButton.
     */
@@ -289,12 +310,14 @@ public class Inventory implements Initializable {
         System.out.println("Delete product button pressed");
 
     }
+
     /*
     Calls modifyProduct() on the selectedProduct when the user clicks the modifyProductButton.
     */
     public void onModifyProductButton(ActionEvent actionEvent) {
         System.out.println("Modify product button pressed");
     }
+
     /*
     Searches allParts and displays allParts as a FilteredList. Not currently functional.
     */
@@ -317,6 +340,7 @@ public class Inventory implements Initializable {
             PartsTableView.setItems(allParts);
         }
     }
+
     /*
     Searches allProducts and displays allProducts as a FilteredList. Not currently functional.
     */

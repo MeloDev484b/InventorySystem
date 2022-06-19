@@ -11,12 +11,13 @@ import main.Main;
 import model.InHouse;
 import model.Outsourced;
 import model.Part;
-
-
 import javax.naming.Name;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/*
+The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
+*/
 public class AddPart implements Initializable {
     public RadioButton InHouseRadio;
     public RadioButton OutsourcedRadio;
@@ -29,6 +30,10 @@ public class AddPart implements Initializable {
         System.out.println("Add part active");
     }
 
+    /*
+    Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create either
+    an inHouse or Outsourced object. After the Part is added to allParts, the window is closed.
+    */
     public void onSaveButton(ActionEvent actionEvent) {
         boolean inHouse = InHouseRadio.isSelected();
         boolean outsourced = OutsourcedRadio.isSelected();
@@ -50,15 +55,24 @@ public class AddPart implements Initializable {
         closeWindow();
     }
 
+    /*
+    Calls closeWindow() when the user clicks the cancel button.
+    */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
+    /*
+    Uses Stage.close() to close the AddPart window.
+    */
     private void closeWindow() {
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /*
+    Changes the label text to reflect the selected radio button.
+    */
     public void onRadioSelect(ActionEvent actionEvent) {
         if (InHouseRadio.isSelected()) {
             InOutLabel.setText("Machine ID");

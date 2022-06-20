@@ -3,6 +3,9 @@ package controller;
 import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+// TODO last task: validate input
+
 /*
 The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */

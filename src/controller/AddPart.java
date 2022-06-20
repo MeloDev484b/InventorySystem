@@ -15,6 +15,8 @@ import javax.naming.Name;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+// TODO last task: validate input
+
 /*
 The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
 */

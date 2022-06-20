@@ -2,20 +2,15 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,7 +21,6 @@ import model.Outsourced;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.ResourceBundle;
 /*
 The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
@@ -45,6 +39,8 @@ public class Inventory implements Initializable {
     // set stage for modify products
     Stage modifyProductStage = new Stage();
     Scene modifyProductScene;
+    // fxml objects
+    public CheckBox idSearchCheckBox;
     public Button ExitButton;
     public AnchorPane PartsAnchorPane;
     public TableView PartsTableView;
@@ -58,8 +54,8 @@ public class Inventory implements Initializable {
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
 
-    public static Part selectedPart;
-    public static Product selectedProduct;
+    public static Part selectedPart = null;
+    public static Product selectedProduct = null;
     public static int partId = 1000;
     public static int productId = 1000;
 
@@ -69,7 +65,8 @@ public class Inventory implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Main Screen active");
-        wrapLists();
+        PartsTableView.setItems(allParts);
+        ProductsTableView.setItems(allProducts);
         //Add test Parts to allParts
         allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
         allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
@@ -96,7 +93,6 @@ public class Inventory implements Initializable {
 
     }
 
-    // TODO last task: add try/catch, validate input, comment blocks everywhere
     // UML-specified methods
     /*
     Uses ObservableList.add() to add a Part object to allParts.
@@ -116,7 +112,6 @@ public class Inventory implements Initializable {
     Returns a Part contained in allParts that matches the supplied partId integer argument.
     */
     public Part lookupPart(int partId) {
-        // TODO 1. Test this
         ObservableList <Part> foundParts = getAllParts();
         for (Part part : foundParts) {
             if (part.getId() == partId) {
@@ -130,7 +125,6 @@ public class Inventory implements Initializable {
     Returns a Product contained in allProducts that matches the supplied productId integer argument.
     */
     public Product lookupProduct(int productId) {
-        // TODO 2. Change this
         ObservableList <Product> foundProducts = getAllProducts();
         for (Product product : foundProducts) {
             if (product.getId() == productId) {
@@ -141,32 +135,43 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Returns an ObservableList of Parts that match the partName.
+    Checks allParts for a partName that matches the Part.getName() and adds it to the partsByName list.
+    If no Parts match, the original allParts list is returned and the user is notified that the searched part
+    does not exist.
     */
     public ObservableList<Part> lookupPart(String partName) {
-        // TODO 3. Change this
-        ObservableList <Part> allParts = getAllParts();
-        ObservableList <Part> foundParts = FXCollections.observableArrayList();
+        ObservableList<Part> partsByName = FXCollections.observableArrayList();
         for (Part part : allParts) {
-            if (part.getName().toLowerCase(Locale.ROOT).contains(partName.toLowerCase(Locale.ROOT))) {
-                foundParts.add(part);
+            if (part.getName().equalsIgnoreCase(partName)) {
+                partsByName.add(part);
             }
         }
-        return foundParts;
+        if (partsByName.size() > 0) {
+            return partsByName;
+        }
+        else {
+            return allParts;
+        }
     }
 
     /*
-    Returns an ObservableList of Products that match the productName.
+    Checks allProducts for a ProductName that matches the Product.getName() and adds it to the ProductsByName list.
+    If no Products match, the original allProducts list is returned and the user is notified that the searched Product
+    does not exist.
     */
     public ObservableList<Product> lookupProduct(String productName) {
-        // TODO 4. Test this
-        ObservableList <Product> foundProducts = getAllProducts();
-        for (Product product : foundProducts) {
-            if (product.getName() != productName) {
-                foundProducts.remove(product);
+        ObservableList<Product> productsByName = FXCollections.observableArrayList();
+        for (Product product : allProducts) {
+            if (product.getName().equalsIgnoreCase(productName)) {
+                productsByName.add(product);
             }
         }
-        return foundProducts;
+        if (productsByName.size() > 0) {
+            return productsByName;
+        }
+        else {
+            return allProducts;
+        }
     }
 
     /*
@@ -213,6 +218,56 @@ public class Inventory implements Initializable {
 
     // Helper methods
     /*
+    Checks allParts for a partId that matches the Part.getId() and adds it to the partsById list.
+    If no Parts match, the original allParts list is returned and the user is notified that the searched part
+    does not exist.
+    */
+    public ObservableList<Part> partById(Part partToId) {
+        if (partToId != null) {
+            ObservableList<Part> partById = FXCollections.observableArrayList();
+            for (Part part : allParts) {
+                if (part.equals(partToId)) {
+                    partById.add(part);
+                }
+            }
+            if (partById.size() > 0) {
+                return partById;
+            }
+            else {
+                return allParts;
+            }
+        }
+        else {
+            return allParts;
+        }
+    }
+
+    /*
+    Checks allProducts for a productId that matches the Product.getId() and adds it to the productsById list.
+    If no Products match, the original allProducts list is returned and the user is notified that the searched product
+    does not exist.
+    */
+    public ObservableList<Product> productById(Product productToId) {
+        if (productToId != null) {
+            ObservableList<Product> productById = FXCollections.observableArrayList();
+            for (Product product : allProducts) {
+                if (product.equals(productToId)) {
+                    productById.add(product);
+                }
+            }
+            if (productById.size() > 0) {
+                return productById;
+            }
+            else {
+                return allProducts;
+            }
+        }
+        else {
+            return allProducts;
+        }
+    }
+
+    /*
     When supplied int value of 0, partId is incremented and returned, when supplied an int value of 1
     productId is incremented and returned.
     */
@@ -233,6 +288,11 @@ public class Inventory implements Initializable {
     }
 
     /*
+    Uses ObservableList.indexOf() to return an integer index of the specified Product.
+    */
+    public static int getIndex (Product product) {return allProducts.indexOf(product);}
+
+    /*
     Uses ObservableList.get() to return a Part at the specified index.
     */
     public static Part getPart(int index) {
@@ -240,89 +300,53 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Sets selectedPart to the Part that the user clicks in the PartsTableView.
+    Uses ObservableList.get() to return a Product at the specified index.
+    */
+    public static Product getProduct(int index) {return allProducts.get(index);}
+
+    /*
+    Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
     */
     public void setSelectedPart() {
-        selectedPart = (Part) PartsTableView.getSelectionModel().getSelectedItem();
+        selectedPart = getPart(getIndex((Part) PartsTableView.getSelectionModel().getSelectedItem()));
     }
 
     /*
     Sets selectedProduct to the Product that the user clicks in the PartsTableView.
     */
     public void setSelectedProduct() {
-        selectedProduct = (Product) ProductsTableView.getSelectionModel().getSelectedItem();
+        selectedProduct = getProduct(getIndex((Product) ProductsTableView.getSelectionModel().getSelectedItem()));
     }
 
-    public void lookup() {
-        if (SearchPartsTextField.getText().matches("^\\d+$")) {
-            ObservableList <Part> temp = FXCollections.observableArrayList();
-            temp.add(lookupPart(Integer.parseInt(SearchPartsTextField.getText())));
-            PartsTableView.setItems(temp);
-        }
-        // TODO come back to this...we've got work to do
-        else if (SearchPartsTextField.getText().matches(".*?")) {
-            ObservableList <Part> foundParts = lookupPart(SearchPartsTextField.getText());
-            for (Part part : allParts) {
-                PartsTableView.getSelectionModel().select((allParts.indexOf(foundParts.get(getIndex(part)).getName())));
-            }
-        }
-        else {
-            System.out.println("Not found.");
-            PartsTableView.setItems(allParts);
-        }
-    }
     /*
-    Allows search functionality by wrapping allParts and allProducts in a FilteredList. Filter predicate is set
-    when the filter changes. The FilteredList is wrapped in a SortedList. The SortedList comparator
-    is bound to the TableView comparator. Finally, the TableViews are set to the appropriate SortedList.
-    Source: https://code.makery.ch/blog/javafx-8-tableview-sorting-filtering/
+     Returns true if an int can be parsed from the String argument.
     */
-    private void wrapLists() {
-        FilteredList <Part> filteredParts = new FilteredList<>(allParts, p -> true);
-        SearchPartsTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredParts.setPredicate(Part -> {
-                if (newValue == null || newValue.isEmpty()){
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                if (Part.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                return false;
-
-            });
-        });
-        SortedList <Part> sortedParts = new SortedList<>(filteredParts);
-        sortedParts.comparatorProperty().bind(PartsTableView.comparatorProperty());
-        PartsTableView.setItems(sortedParts);
-
-        FilteredList <Product> filteredProducts = new FilteredList<>(allProducts, p -> true);
-        SearchProductsTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredProducts.setPredicate(Product -> {
-                if (newValue == null || newValue.isEmpty()){
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                if (Product.getName().toLowerCase().contains(lowerCaseFilter)) {
-                    return true;
-                }
-                return false;
-
-            });
-        });
-        SortedList <Product> sortedProducts = new SortedList<>(filteredProducts);
-        sortedProducts.comparatorProperty().bind(ProductsTableView.comparatorProperty());
-        ProductsTableView.setItems(sortedProducts);
+    public boolean intCheck(String checkMe) {
+        if (checkMe == null) {
+            return false;
+        }
+        try {
+            Integer.parseInt(checkMe);
+        }
+        catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
-
 
     // fxml methods
     /*
-    Uses System.exit() to exit the application
+    Calls setSelectedPart() when the user clicks on the PartsTableView.
     */
-    public void onExitButton(ActionEvent actionEvent) {
-        System.out.println("Exit button pressed");
-        System.exit(0);
+    public void onPartsTableViewClick(MouseEvent mouseEvent) {
+        setSelectedPart();
+    }
+
+    /*
+    Calls setSelectedProduct() when the user clicks on the ProductsTableView.
+    */
+    public void onProductsTableViewClick(MouseEvent mouseEvent) {
+        setSelectedProduct();
     }
 
     /*
@@ -338,26 +362,6 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Calls deletePart() on the selectedPart when the user clicks the deletePartButton.
-    */
-    public void onDeletePartButton(ActionEvent actionEvent) {
-        System.out.println("Delete part button pressed");
-        deletePart(selectedPart);
-    }
-
-    /*
-    Loads and displays the ModifyPart GUI.
-    */
-    public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
-        System.out.println("Modify part button pressed");
-        FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
-        Parent root = loadModifyPart.load();
-        modifyPartScene = new Scene(root);
-        modifyPartStage.setScene(modifyPartScene);
-        modifyPartStage.show();
-    }
-
-    /*
     Loads and displays the AddProduct GUI.
     */
     public void onAddProductButton(ActionEvent event) throws IOException{
@@ -369,17 +373,12 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Calls setSelectedProduct() when the user clicks on the ProductsTableView.
+    Calls deletePart() on the selectedPart when the user clicks the deletePartButton, then resets PartsTableView.
     */
-    public void onProductsTableViewClick(MouseEvent mouseEvent) {
-        setSelectedProduct();
-    }
-
-    /*
-    Calls setSelectedPart() when the user clicks on the PartsTableView.
-    */
-    public void onPartsTableViewClick(MouseEvent mouseEvent) {
-        setSelectedPart();
+    public void onDeletePartButton(ActionEvent actionEvent) {
+        System.out.println("Delete part button pressed");
+        deletePart(selectedPart);
+        PartsTableView.setItems(allParts);
     }
 
     /*
@@ -391,15 +390,76 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Loads and displays the ModifyProduct GUI.
+    Checks to see if the user has selected a part, then loads and displays the ModifyPart GUI if they have.
+    */
+    public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
+        if (selectedPart != null) {
+            System.out.println("Modify part button pressed");
+            FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
+            Parent root = loadModifyPart.load();
+            modifyPartScene = new Scene(root);
+            modifyPartStage.setScene(modifyPartScene);
+            modifyPartStage.show();
+        }
+        else {
+            System.out.println("Select a part first");
+        }
+    }
+
+    /*
+    Checks to see if the user has selected a Product, then loads and displays the ModifyProduct GUI if they have.
     */
     public void onModifyProductButton(ActionEvent actionEvent) throws IOException {
-        System.out.println("Modify product button pressed");
-        FXMLLoader loadModifyProduct = new FXMLLoader(getClass().getResource("/view/ModifyProduct.fxml"));
-        Parent root = loadModifyProduct.load();
-        modifyProductScene = new Scene(root);
-        modifyProductStage.setScene(modifyProductScene);
-        modifyProductStage.show();
+        if (selectedProduct != null) {
+            System.out.println("Modify product button pressed");
+            FXMLLoader loadModifyProduct = new FXMLLoader(getClass().getResource("/view/ModifyProduct.fxml"));
+            Parent root = loadModifyProduct.load();
+            modifyProductScene = new Scene(root);
+            modifyProductStage.setScene(modifyProductScene);
+            modifyProductStage.show();
+        }
+        else {
+            System.out.println("Select a product first");
+        }
+    }
+
+    /*
+    Uses System.exit() to exit the application
+    */
+    public void onExitButton(ActionEvent actionEvent) {
+        System.out.println("Exit button pressed");
+        System.exit(0);
+    }
+
+    /*
+    When the user presses enter after typing in the searchPartsTextField, the PartsTableView is set to show
+    the results of lookupPart().
+    */
+    public void onSearchPartsTextField(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (intCheck(SearchPartsTextField.getText())) {
+                int partInt = Integer.parseInt(SearchPartsTextField.getText());
+                PartsTableView.setItems(partById(lookupPart(partInt)));
+            }
+            else {
+                PartsTableView.setItems(lookupPart(SearchPartsTextField.getText()));
+            }
+        }
+    }
+
+    /*
+    When the user presses enter after typing in the searchProductsTextField, the ProductsTableView is set to show
+    the results of lookupProduct().
+    */
+    public void onSearchProductsTextField(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (intCheck(SearchProductsTextField.getText())) {
+                int productInt = Integer.parseInt(SearchProductsTextField.getText());
+                ProductsTableView.setItems(productById(lookupProduct(productInt)));
+            }
+            else {
+                ProductsTableView.setItems(lookupProduct(SearchProductsTextField.getText()));
+            }
+        }
     }
 }
-

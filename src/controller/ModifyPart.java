@@ -29,6 +29,8 @@ public class ModifyPart implements Initializable {
 
     private int savedIndex;
 
+    // TODO last task: validate input
+
     /*
     Checks the subclass of the Part to be modified and checks the appropriate radio button. Stores the selectedPart
     from Inventory in the respective Part variable. The label for the last argument is set to the appropriate text
@@ -83,9 +85,10 @@ public class ModifyPart implements Initializable {
     }
 
     /*
-    Uses Stage.close() to close the ModifyPart window.
+    Uses Stage.close() to close the ModifyPart window and sets Inventory.selectedPart to null.
     */
     private void closeWindow() {
+        Inventory.selectedPart = null;
         Stage stage = (Stage) CancelButton.getScene().getWindow();
         stage.close();
     }

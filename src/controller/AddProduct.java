@@ -126,12 +126,9 @@ public class AddProduct implements Initializable {
 
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
-        System.out.println("Selected item is " + selectedPart.getName());
     }
 
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {
         setSelectedAssociatedPart();
     }
-
-
 }

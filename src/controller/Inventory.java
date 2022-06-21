@@ -39,6 +39,9 @@ public class Inventory implements Initializable {
     // set stage for modify products
     Stage modifyProductStage = new Stage();
     Scene modifyProductScene;
+    // set stage for delete warning
+    Stage confirmDeleteStage = new Stage();
+    Scene confirmDeleteScene;
     // fxml objects
     public CheckBox idSearchCheckBox;
     public Button exitButton;
@@ -53,6 +56,7 @@ public class Inventory implements Initializable {
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
 
+    public static boolean delete = false;
     public static Part selectedPart = null;
     public static Product selectedProduct = null;
     public static int partId = 1000;
@@ -375,10 +379,17 @@ public class Inventory implements Initializable {
     /*
     Calls deletePart() on the selectedPart when the user clicks the deletePartButton, then resets PartsTableView.
     */
-    public void onDeletePartButton(ActionEvent actionEvent) {
+    public void onDeletePartButton(ActionEvent actionEvent) throws IOException {
         System.out.println("Delete part button pressed");
-        deletePart(selectedPart);
-        partsTableView.setItems(allParts);
+        FXMLLoader loadDeleteWarning = new FXMLLoader(getClass().getResource("/view/ConfirmDelete.fxml"));
+        Parent root = loadDeleteWarning.load();
+        confirmDeleteScene = new Scene(root);
+        confirmDeleteStage.setScene(confirmDeleteScene);
+        confirmDeleteStage.show();
+        if (delete) {
+            deletePart(selectedPart);
+            partsTableView.setItems(allParts);
+        }
     }
 
     /*

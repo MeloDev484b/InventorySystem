@@ -69,10 +69,6 @@ public class AddProduct implements Initializable {
         }
     }
 
-    public void addPartToTemp(Part part) {
-        temp.addAssociatedPart(part);
-    }
-
     /*
     Calls closeWindow() when the user clicks the cancel button.
     */

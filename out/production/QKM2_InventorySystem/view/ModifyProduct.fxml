@@ -27,7 +27,7 @@
                         <AnchorPane prefHeight="25.0" prefWidth="200.0">
                             <children>
                                 <Label layoutX="18.0" layoutY="4.0" text="ID" />
-                                <TextField editable="false" layoutX="90.0" layoutY="1.0" opacity="0.75" scaleX="0.75" text="Auto-generated" />
+                                <TextField fx:id="idField" editable="false" layoutX="90.0" layoutY="1.0" opacity="0.75" scaleX="0.75" />
                             </children>
                             <padding>
                                 <Insets bottom="10.0" />

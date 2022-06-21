@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
 public class ModifyProduct implements Initializable {
-    public TextField nameField, invField, priceCostField, maxField, minField;
+    public TextField idField, nameField, invField, priceCostField, maxField, minField;
     public TableView inventoryPartsTableView;
     public TableView<Part> associatedPartsTableView;
     public Button addAssociatedPartButton, removeAssociatedPartButton, saveProductButton, cancelButton;
@@ -37,10 +37,14 @@ public class ModifyProduct implements Initializable {
     private Part selectedPart = null;
     private Part selectedAssociatedPart = null;
     private Product temp;
+
+    private int savedIndex;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Add product active");
-        temp = new Product(0, "", 0.0, 0, 0, 0);
+        savedIndex = Inventory.getIndex(Inventory.selectedProduct);
+        temp = Inventory.selectedProduct;
+        productIntake();
         inventoryPartsTableView.setItems(Inventory.getAllParts());
         associatedPartsTableView.setItems(temp.getAllAssociatedParts());
 
@@ -57,6 +61,17 @@ public class ModifyProduct implements Initializable {
         aPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    public void productIntake() {
+        if (temp != null) {
+            idField.setText(String.valueOf(temp.getId()));
+            nameField.setText(String.valueOf(temp.getName()));
+            invField.setText(String.valueOf(temp.getStock()));
+            priceCostField.setText(String.valueOf(temp.getPrice()));
+            maxField.setText(String.valueOf(temp.getMax()));
+            minField.setText(String.valueOf(temp.getMin()));
+        }
+    }
+
     public void setSelectedPart() throws NullPointerException {
         if (inventoryPartsTableView != null) {
             selectedPart = (Part) inventoryPartsTableView.getSelectionModel().getSelectedItem();
@@ -69,8 +84,12 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    public void addPartToTemp(Part part) {
-        temp.addAssociatedPart(part);
+    /*
+Uses Stage.close() to close the AddProduct window.
+*/
+    private void closeWindow() {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
     }
 
     /*
@@ -78,14 +97,6 @@ public class ModifyProduct implements Initializable {
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
-    }
-
-    /*
-    Uses Stage.close() to close the AddProduct window.
-    */
-    private void closeWindow() {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
     }
 
     public void onAddAssociatedPartButton(ActionEvent actionEvent) {
@@ -105,14 +116,12 @@ public class ModifyProduct implements Initializable {
     After the Product is added to allProducts, Inventory.productId is incremented and the window is closed.
     */
     public void onSaveProductButton(ActionEvent actionEvent) {
-        temp.setId(Inventory.productId);
         temp.setName(nameField.getText());
         temp.setPrice(Double.parseDouble(priceCostField.getText()));
         temp.setStock(Integer.parseInt(invField.getText()));
         temp.setMin(Integer.parseInt(minField.getText()));
         temp.setMax(Integer.parseInt(maxField.getText()));
-        Inventory.addProduct(temp);
-        Inventory.incrementId(1);
+        Inventory.updateProduct(savedIndex, temp);
         closeWindow();
     }
 
@@ -136,6 +145,5 @@ public class ModifyProduct implements Initializable {
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {
         setSelectedAssociatedPart();
     }
-
 
 }

@@ -1,14 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ModifyProduct"
-            prefHeight="480.0" prefWidth="720.0">
-
+<AnchorPane prefHeight="560.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyProduct">
+    <children>
+        <HBox prefHeight="560.0" prefWidth="800.0">
+            <children>
+                <VBox prefHeight="560.0" prefWidth="359.0">
+                    <children>
+                        <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="480.0">
+                            <VBox.margin>
+                                <Insets bottom="20.0" top="20.0" />
+                            </VBox.margin>
+                            <children>
+                                <Label layoutX="14.0" layoutY="7.0" text="Add Product">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="25.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="18.0" layoutY="4.0" text="ID" />
+                                <TextField editable="false" layoutX="90.0" layoutY="1.0" opacity="0.75" scaleX="0.75" text="Auto-generated" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" />
+                            </padding>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="18.0" layoutY="4.0" text="Name" />
+                                <TextField fx:id="nameField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" />
+                            </padding>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="18.0" layoutY="4.0" text="Inv" />
+                                <TextField fx:id="invField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" />
+                            </padding>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="18.0" layoutY="4.0" text="Price/Cost" />
+                                <TextField fx:id="priceCostField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" />
+                            </padding>
+                        </AnchorPane>
+                        <AnchorPane layoutX="10.0" layoutY="40.0" prefHeight="25.0" prefWidth="200.0">
+                            <children>
+                                <Label layoutX="18.0" layoutY="4.0" text="Max" />
+                                <TextField fx:id="maxField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                                <Label layoutX="234.0" layoutY="4.0" text="Min" />
+                                <TextField fx:id="minField" layoutX="246.0" layoutY="1.0" scaleX="0.75" />
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" />
+                            </padding>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+                <AnchorPane prefHeight="560.0" prefWidth="440.0">
+                    <children>
+                        <TableView fx:id="inventoryPartsTableView" layoutX="40.0" layoutY="64.0" prefHeight="172.0" prefWidth="326.0">
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="C1" />
+                                <TableColumn prefWidth="75.0" text="C2" />
+                            </columns>
+                        </TableView>
+                        <TableView fx:id="associatedPartTableView" layoutX="40.0" layoutY="300.0" prefHeight="172.0" prefWidth="326.0">
+                            <columns>
+                                <TableColumn prefWidth="75.0" text="C1" />
+                                <TableColumn prefWidth="75.0" text="C2" />
+                            </columns>
+                        </TableView>
+                        <Button fx:id="addAssociatedPartButton" layoutX="222.0" layoutY="254.0" mnemonicParsing="false" text="Add" />
+                        <Group layoutX="222.0" layoutY="480.0">
+                            <children>
+                                <Button fx:id="removeAssociatedPartButton" mnemonicParsing="false" text="Remove Associated Part" />
+                                <Button fx:id="saveProductButton" layoutY="40.0" mnemonicParsing="false" text="Save" />
+                                <Button fx:id="cancelButton" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" text="Cancel" />
+                            </children>
+                        </Group>
+                        <TextField fx:id="inventoryPartsSearchTextField" layoutX="217.0" layoutY="28.0" />
+                    </children>
+                    <padding>
+                        <Insets right="10.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets />
+                    </HBox.margin>
+                </AnchorPane>
+            </children></HBox>
+    </children>
 </AnchorPane>

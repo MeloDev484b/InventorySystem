@@ -7,25 +7,23 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.Main;
 import model.InHouse;
 import model.Outsourced;
-import model.Part;
-import javax.naming.Name;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// TODO last task: validate input
+// TODO validate input
 
 /*
 The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
 */
 public class AddPart implements Initializable {
-    public RadioButton InHouseRadio;
-    public RadioButton OutsourcedRadio;
-    public TextField IdField, NameField, InvField, PriceCostField, MaxField, MinField, MachineIdField;
-    public Button SaveButton, CancelButton;
-    public Label InOutLabel;
+    public RadioButton inHouseRadio;
+    public RadioButton outsourcedRadio;
+    public TextField idField, nameField, invField, priceCostField, maxField, minField, machineIdField;
+    public Button saveButton, cancelButton;
+    public Label inOutLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -37,21 +35,21 @@ public class AddPart implements Initializable {
     an inHouse or Outsourced object. After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
     */
     public void onSaveButton(ActionEvent actionEvent) {
-        boolean inHouse = InHouseRadio.isSelected();
-        boolean outsourced = OutsourcedRadio.isSelected();
+        boolean inHouse = inHouseRadio.isSelected();
+        boolean outsourced = outsourcedRadio.isSelected();
         int id = Inventory.partId;
-        String name = NameField.getText();
-        double price = Double.parseDouble(PriceCostField.getText());
-        int stock = Integer.parseInt(InvField.getText());
-        int min = Integer.parseInt(MinField.getText());
-        int max = Integer.parseInt(MaxField.getText());
+        String name = nameField.getText();
+        double price = Double.parseDouble(priceCostField.getText());
+        int stock = Integer.parseInt(invField.getText());
+        int min = Integer.parseInt(minField.getText());
+        int max = Integer.parseInt(maxField.getText());
 
         if (inHouse) {
-            int machineId = Integer.parseInt(InOutLabel.getText());
+            int machineId = Integer.parseInt(inOutLabel.getText());
             Inventory.addPart(new InHouse(id, name, price, stock, min, max, machineId));
         }
         else {
-            String companyName = InOutLabel.getText();
+            String companyName = inOutLabel.getText();
             Inventory.addPart(new Outsourced(id, name, price, stock, min, max, companyName));
         }
         Inventory.incrementId(0);
@@ -69,7 +67,7 @@ public class AddPart implements Initializable {
     Uses Stage.close() to close the AddPart window.
     */
     private void closeWindow() {
-        Stage stage = (Stage) CancelButton.getScene().getWindow();
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
@@ -77,11 +75,11 @@ public class AddPart implements Initializable {
     Changes the label text to reflect the selected radio button.
     */
     public void onRadioSelect(ActionEvent actionEvent) {
-        if (InHouseRadio.isSelected()) {
-            InOutLabel.setText("Machine ID");
+        if (inHouseRadio.isSelected()) {
+            inOutLabel.setText("Machine ID");
         }
         else {
-            InOutLabel.setText("Company Name");
+            inOutLabel.setText("Company Name");
         }
     }
 }

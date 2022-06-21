@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.InHouse;
 import model.Outsourced;
-import model.Part;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,17 +18,17 @@ The ModifyPart class is used to modify InHouse and Outsourced objects and save t
 original index.
 */
 public class ModifyPart implements Initializable {
-    public RadioButton InHouseRadio, OutsourcedRadio;
-    public TextField IdField, NameField, InvField, PriceCostField, MaxField, MinField, MachineIdField;
-    public Label InOutLabel;
-    public Button SaveButton, CancelButton;
+    public RadioButton inHouseRadio, outsourcedRadio;
+    public TextField idField, nameField, invField, priceCostField, maxField, minField, machineIdField;
+    public Label inOutLabel;
+    public Button saveButton, cancelButton;
 
     private InHouse inHousePart = null;
     private Outsourced outsourcedPart = null;
 
     private int savedIndex;
 
-    // TODO last task: validate input
+    // TODO validate input
 
     /*
     Checks the subclass of the Part to be modified and checks the appropriate radio button. Stores the selectedPart
@@ -40,11 +39,11 @@ public class ModifyPart implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Modify part active");
         if (Inventory.selectedPart.getClass() == InHouse.class) {
-            InHouseRadio.setSelected(true);
+            inHouseRadio.setSelected(true);
             inHousePart = (InHouse) Inventory.selectedPart;
         }
         else {
-            OutsourcedRadio.setSelected(true);
+            outsourcedRadio.setSelected(true);
             outsourcedPart = (Outsourced) Inventory.selectedPart;
         }
         setLabel();
@@ -58,19 +57,19 @@ public class ModifyPart implements Initializable {
     */
     public void onSaveButton(ActionEvent actionEvent) {
         savedIndex = Inventory.getIndex(Inventory.selectedPart);
-        int id = Integer.parseInt(IdField.getText());
-        String name = NameField.getText();
-        double price = Double.parseDouble(PriceCostField.getText());
-        int inventory = Integer.parseInt(InvField.getText());
-        int min = Integer.parseInt(MinField.getText());
-        int max = Integer.parseInt(MaxField.getText());
-        if (InHouseRadio.isSelected()) {
-            int machineId = Integer.parseInt(MachineIdField.getText());
+        int id = Integer.parseInt(idField.getText());
+        String name = nameField.getText();
+        double price = Double.parseDouble(priceCostField.getText());
+        int inventory = Integer.parseInt(invField.getText());
+        int min = Integer.parseInt(minField.getText());
+        int max = Integer.parseInt(maxField.getText());
+        if (inHouseRadio.isSelected()) {
+            int machineId = Integer.parseInt(machineIdField.getText());
             InHouse modifiedPart = new InHouse(id, name, price, inventory, min, max, machineId);
             Inventory.updatePart(savedIndex, modifiedPart);
         }
         else {
-            String companyName = MachineIdField.getText();
+            String companyName = machineIdField.getText();
             Outsourced modifiedPart = new Outsourced(id, name, price, inventory, min, max, companyName);
             Inventory.updatePart(savedIndex, modifiedPart);
         }
@@ -89,7 +88,7 @@ public class ModifyPart implements Initializable {
     */
     private void closeWindow() {
         Inventory.selectedPart = null;
-        Stage stage = (Stage) CancelButton.getScene().getWindow();
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
@@ -104,11 +103,11 @@ public class ModifyPart implements Initializable {
     Changes the label text to reflect the selected radio button.
     */
     public void setLabel() {
-        if (InHouseRadio.isSelected()) {
-            InOutLabel.setText("Machine ID");
+        if (inHouseRadio.isSelected()) {
+            inOutLabel.setText("Machine ID");
         }
         else {
-            InOutLabel.setText("Company Name");
+            inOutLabel.setText("Company Name");
         }
     }
 
@@ -118,22 +117,22 @@ public class ModifyPart implements Initializable {
     public void partIntake() {
 
         if (inHousePart != null) {
-            IdField.setText(String.valueOf(inHousePart.getId()));
-            NameField.setText(String.valueOf(inHousePart.getName()));
-            InvField.setText(String.valueOf(inHousePart.getStock()));
-            PriceCostField.setText(String.valueOf(inHousePart.getPrice()));
-            MaxField.setText(String.valueOf(inHousePart.getMax()));
-            MinField.setText(String.valueOf(inHousePart.getMin()));
-            MachineIdField.setText(String.valueOf(inHousePart.getMachineId()));
+            idField.setText(String.valueOf(inHousePart.getId()));
+            nameField.setText(String.valueOf(inHousePart.getName()));
+            invField.setText(String.valueOf(inHousePart.getStock()));
+            priceCostField.setText(String.valueOf(inHousePart.getPrice()));
+            maxField.setText(String.valueOf(inHousePart.getMax()));
+            minField.setText(String.valueOf(inHousePart.getMin()));
+            machineIdField.setText(String.valueOf(inHousePart.getMachineId()));
         }
         else if (outsourcedPart != null){
-            IdField.setText(String.valueOf(outsourcedPart.getId()));
-            NameField.setText(String.valueOf(outsourcedPart.getName()));
-            InvField.setText(String.valueOf(outsourcedPart.getStock()));
-            PriceCostField.setText(String.valueOf(outsourcedPart.getPrice()));
-            MaxField.setText(String.valueOf(outsourcedPart.getMax()));
-            MinField.setText(String.valueOf(outsourcedPart.getMin()));
-            MachineIdField.setText(String.valueOf(outsourcedPart.getCompanyName()));
+            idField.setText(String.valueOf(outsourcedPart.getId()));
+            nameField.setText(String.valueOf(outsourcedPart.getName()));
+            invField.setText(String.valueOf(outsourcedPart.getStock()));
+            priceCostField.setText(String.valueOf(outsourcedPart.getPrice()));
+            maxField.setText(String.valueOf(outsourcedPart.getMax()));
+            minField.setText(String.valueOf(outsourcedPart.getMin()));
+            machineIdField.setText(String.valueOf(outsourcedPart.getCompanyName()));
         }
     }
 }

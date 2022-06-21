@@ -41,15 +41,14 @@ public class Inventory implements Initializable {
     Scene modifyProductScene;
     // fxml objects
     public CheckBox idSearchCheckBox;
-    public Button ExitButton;
-    public AnchorPane PartsAnchorPane;
-    public TableView PartsTableView;
-    public TableColumn PartIdColumn, PartNameColumn, PartInventoryLevelColumn, PartPricePerUnitColumn;
-    public Button AddPartButton, DeletePartButton, ModifyPartButton;
-    public TextField SearchPartsTextField, SearchProductsTextField;
-    public TableView ProductsTableView;
-    public TableColumn ProductIdColumn, ProductNameColumn, ProductInventoryLevelColumn, ProductPricePerUnitColumn;
-    public Button AddProductButton, DeleteProductButton, ModifyProductButton;
+    public Button exitButton;
+    public AnchorPane partsAnchorPane;
+    public TableView partsTableView, productsTableView;
+    public TableColumn partIdColumn, partNameColumn, partInventoryLevelColumn, partPricePerUnitColumn;
+    public Button addPartButton, deletePartButton, modifyPartButton;
+    public TextField searchPartsTextField, searchProductsTextField;
+    public TableColumn productIdColumn, productNameColumn, productInventoryLevelColumn, productPricePerUnitColumn;
+    public Button addProductButton, deleteProductButton, modifyProductButton;
 
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
@@ -65,8 +64,8 @@ public class Inventory implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Main Screen active");
-        PartsTableView.setItems(allParts);
-        ProductsTableView.setItems(allProducts);
+        partsTableView.setItems(allParts);
+        productsTableView.setItems(allProducts);
         //Add test Parts to allParts
         allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
         allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
@@ -74,10 +73,10 @@ public class Inventory implements Initializable {
         allParts.add(new Outsourced(4567, "Bun", 69.80, 1, 1, 20, "Generic Cola"));
 
         //Set Parts table columns
-        PartIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        PartNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        PartPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        PartInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        partPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        partInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         //Add test Products to allProducts
         allProducts.add(new Product(3456, "Branch", 17.99, 19, 1, 20));
@@ -86,10 +85,10 @@ public class Inventory implements Initializable {
         allProducts.add(new Product(9240, "Shovel", 9.21, 2, 1, 20));
 
         //Set Products columns
-        ProductIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        ProductPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        ProductInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        productIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        productPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        productInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
     }
 
@@ -308,14 +307,14 @@ public class Inventory implements Initializable {
     Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
     */
     public void setSelectedPart() {
-        selectedPart = getPart(getIndex((Part) PartsTableView.getSelectionModel().getSelectedItem()));
+        selectedPart = getPart(getIndex((Part) partsTableView.getSelectionModel().getSelectedItem()));
     }
 
     /*
     Sets selectedProduct to the Product that the user clicks in the PartsTableView.
     */
     public void setSelectedProduct() {
-        selectedProduct = getProduct(getIndex((Product) ProductsTableView.getSelectionModel().getSelectedItem()));
+        selectedProduct = getProduct(getIndex((Product) productsTableView.getSelectionModel().getSelectedItem()));
     }
 
     /*
@@ -378,7 +377,7 @@ public class Inventory implements Initializable {
     public void onDeletePartButton(ActionEvent actionEvent) {
         System.out.println("Delete part button pressed");
         deletePart(selectedPart);
-        PartsTableView.setItems(allParts);
+        partsTableView.setItems(allParts);
     }
 
     /*
@@ -437,12 +436,12 @@ public class Inventory implements Initializable {
     */
     public void onSearchPartsTextField(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (intCheck(SearchPartsTextField.getText())) {
-                int partInt = Integer.parseInt(SearchPartsTextField.getText());
-                PartsTableView.setItems(partById(lookupPart(partInt)));
+            if (intCheck(searchPartsTextField.getText())) {
+                int partInt = Integer.parseInt(searchPartsTextField.getText());
+                partsTableView.setItems(partById(lookupPart(partInt)));
             }
             else {
-                PartsTableView.setItems(lookupPart(SearchPartsTextField.getText()));
+                partsTableView.setItems(lookupPart(searchPartsTextField.getText()));
             }
         }
     }
@@ -453,12 +452,12 @@ public class Inventory implements Initializable {
     */
     public void onSearchProductsTextField(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
-            if (intCheck(SearchProductsTextField.getText())) {
-                int productInt = Integer.parseInt(SearchProductsTextField.getText());
-                ProductsTableView.setItems(productById(lookupProduct(productInt)));
+            if (intCheck(searchProductsTextField.getText())) {
+                int productInt = Integer.parseInt(searchProductsTextField.getText());
+                productsTableView.setItems(productById(lookupProduct(productInt)));
             }
             else {
-                ProductsTableView.setItems(lookupProduct(SearchProductsTextField.getText()));
+                productsTableView.setItems(lookupProduct(searchProductsTextField.getText()));
             }
         }
     }

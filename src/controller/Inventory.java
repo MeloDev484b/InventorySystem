@@ -66,11 +66,6 @@ public class Inventory implements Initializable {
         System.out.println("Main Screen active");
         partsTableView.setItems(allParts);
         productsTableView.setItems(allProducts);
-        //Add test Parts to allParts
-        allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
-        allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
-        allParts.add(new Outsourced(7855, "Nut", 1.69, 8, 1, 20, "A Company"));
-        allParts.add(new Outsourced(4567, "Bun", 69.80, 1, 1, 20, "Generic Cola"));
 
         //Set Parts table columns
         partIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -78,17 +73,23 @@ public class Inventory implements Initializable {
         partPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         partInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
-        //Add test Products to allProducts
-        allProducts.add(new Product(3456, "Branch", 17.99, 19, 1, 20));
-        allProducts.add(new Product(3466, "Cheese Wheel", 77.45, 17, 1, 20));
-        allProducts.add(new Product(7688, "Sandwich", 12.44, 9, 1, 20));
-        allProducts.add(new Product(9240, "Shovel", 9.21, 2, 1, 20));
-
         //Set Products columns
         productIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         productPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         productInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
+        //Add test Parts to allParts
+        allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
+        allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
+        allParts.add(new Outsourced(7855, "Nut", 1.69, 8, 1, 20, "A Company"));
+        allParts.add(new Outsourced(4567, "Bun", 69.80, 1, 1, 20, "Generic Cola"));
+
+        //Add test Products to allProducts
+        allProducts.add(new Product(3456, "Branch", 17.99, 19, 1, 20));
+        allProducts.add(new Product(3466, "Cheese Wheel", 77.45, 17, 1, 20));
+        allProducts.add(new Product(7688, "Sandwich", 12.44, 9, 1, 20));
+        allProducts.add(new Product(9240, "Shovel", 9.21, 2, 1, 20));
 
     }
 
@@ -110,7 +111,7 @@ public class Inventory implements Initializable {
     /*
     Returns a Part contained in allParts that matches the supplied partId integer argument.
     */
-    public Part lookupPart(int partId) {
+    public static Part lookupPart(int partId) {
         ObservableList <Part> foundParts = getAllParts();
         for (Part part : foundParts) {
             if (part.getId() == partId) {
@@ -138,7 +139,7 @@ public class Inventory implements Initializable {
     If no Parts match, the original allParts list is returned and the user is notified that the searched part
     does not exist.
     */
-    public ObservableList<Part> lookupPart(String partName) {
+    public static ObservableList<Part> lookupPart(String partName) {
         ObservableList<Part> partsByName = FXCollections.observableArrayList();
         for (Part part : allParts) {
             if (part.getName().equalsIgnoreCase(partName)) {
@@ -204,7 +205,7 @@ public class Inventory implements Initializable {
     /*
     Getter that returns the ObservableList allParts.
     */
-    public ObservableList getAllParts() {
+    public static ObservableList getAllParts() {
         return allParts;
     }
 
@@ -221,7 +222,7 @@ public class Inventory implements Initializable {
     If no Parts match, the original allParts list is returned and the user is notified that the searched part
     does not exist.
     */
-    public ObservableList<Part> partById(Part partToId) {
+    public static ObservableList<Part> partById(Part partToId) {
         if (partToId != null) {
             ObservableList<Part> partById = FXCollections.observableArrayList();
             for (Part part : allParts) {
@@ -320,7 +321,7 @@ public class Inventory implements Initializable {
     /*
      Returns true if an int can be parsed from the String argument.
     */
-    public boolean intCheck(String checkMe) {
+    public static boolean intCheck(String checkMe) {
         if (checkMe == null) {
             return false;
         }
@@ -366,9 +367,9 @@ public class Inventory implements Initializable {
     public void onAddProductButton(ActionEvent event) throws IOException{
         FXMLLoader loadAddProduct = new FXMLLoader(getClass().getResource("/view/AddProduct.fxml"));
         Parent root = loadAddProduct.load();
-        modifyPartScene = new Scene(root);
-        modifyPartStage.setScene(modifyPartScene);
-        modifyPartStage.show();
+        modifyProductScene = new Scene(root);
+        modifyProductStage.setScene(modifyProductScene);
+        modifyProductStage.show();
     }
 
     /*

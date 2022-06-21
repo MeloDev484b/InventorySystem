@@ -75,27 +75,31 @@
               </VBox>
             <AnchorPane prefHeight="560.0" prefWidth="440.0">
                <children>
-                  <TableView fx:id="inventoryPartsTableView" layoutX="40.0" layoutY="64.0" prefHeight="172.0" prefWidth="326.0">
+                  <TableView fx:id="inventoryPartsTableView" layoutX="3.0" layoutY="64.0" onMouseClicked="#onInventoryPartsTableViewClicked" prefHeight="172.0" prefWidth="395.0">
                     <columns>
-                       <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                       <TableColumn fx:id="partIdColumn" prefWidth="100.0" text="Part ID" />
+                      <TableColumn fx:id="partNameColumn" prefWidth="100.0" text="Part Name" />
+                        <TableColumn fx:id="inventoryLevelColumn" prefWidth="100.0" text="Inventory Level" />
+                        <TableColumn fx:id="pricePerUnitColumn" prefWidth="100.0" text="Price Per Unit" />
                     </columns>
                   </TableView>
-                  <TableView fx:id="associatedPartTableView" layoutX="40.0" layoutY="300.0" prefHeight="172.0" prefWidth="326.0">
+                  <TableView fx:id="associatedPartsTableView" layoutX="7.0" layoutY="300.0" onMouseClicked="#onAssociatedPartTableViewClicked" prefHeight="172.0" prefWidth="395.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="aPartIdColumn" prefWidth="100.0" text="Part ID" />
+                      <TableColumn fx:id="aPartNameColumn" prefWidth="100.0" text="Part Name" />
+                        <TableColumn fx:id="aInventoryLevelColumn" prefWidth="100.0" text="Inventory Level" />
+                        <TableColumn fx:id="aPricePerUnitColumn" prefWidth="100.0" text="Price Per Unit" />
                     </columns>
                   </TableView>
-                  <Button fx:id="addAssociatedPartButton" layoutX="222.0" layoutY="254.0" mnemonicParsing="false" text="Add" />
+                  <Button fx:id="addAssociatedPartButton" layoutX="222.0" layoutY="254.0" mnemonicParsing="false" onAction="#onAddAssociatedPartButton" text="Add" />
                   <Group layoutX="222.0" layoutY="480.0">
                      <children>
-                        <Button fx:id="removeAssociatedPartButton" mnemonicParsing="false" text="Remove Associated Part" />
-                        <Button fx:id="saveProductButton" layoutY="40.0" mnemonicParsing="false" text="Save" />
-                        <Button fx:id="cancelButton" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" text="Cancel" />
+                        <Button fx:id="removeAssociatedPartButton" mnemonicParsing="false" onAction="#onRemoveAssociatedPartButton" text="Remove Associated Part" />
+                        <Button fx:id="saveProductButton" layoutY="40.0" mnemonicParsing="false" onAction="#onSaveProductButton" text="Save" />
+                        <Button fx:id="cancelButton" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
                      </children>
                   </Group>
-                  <TextField fx:id="inventoryPartsSearchTextField" layoutX="217.0" layoutY="28.0" />
+                  <TextField fx:id="inventoryPartsSearchTextField" layoutX="217.0" layoutY="28.0" onKeyPressed="#onInventoryPartsSearchTextField" />
                </children>
                <padding>
                   <Insets right="10.0" />

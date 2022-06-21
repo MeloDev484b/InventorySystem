@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 The Product class is used to hold Product data and an ObservableList of associatedParts.
 */
 public class Product {
-    private ObservableList <Part> associatedParts;
+    private ObservableList <Part> associatedParts = FXCollections.observableArrayList();
     private int id;
     private String name;
     private double price;

@@ -22,7 +22,6 @@ public class ModifyPart implements Initializable {
     public TextField idField, nameField, invField, priceCostField, maxField, minField, seventhArgField;
     public Label seventhArgLabel;
     public Button saveButton, cancelButton;
-
     private InHouse inHousePart = null;
     private Outsourced outsourcedPart = null;
     private String name;
@@ -33,8 +32,6 @@ public class ModifyPart implements Initializable {
     private int machineId;
     private String companyName;
     private int savedIndex;
-
-    // TODO validate input
 
     /*
     Checks the subclass of the Part to be modified and checks the appropriate radio button. Stores the selectedPart
@@ -58,8 +55,9 @@ public class ModifyPart implements Initializable {
 
     /*
     When the user clicks the saveButton the TextField data is saved in variables and then an appropriate
-    subclass is created with that data. The index of the Part that was modified is used to save
-    the modified Part to allParts.
+    subclass is created with that data. The inHouseRadio button is checked to see if it is selected, if it is
+    selected, an InHouse part is created with the appropriate arguments, and if it is not, an Outsourced part
+    is created. The index of the Part that is being modified is used to save the modified Part to allParts.
     */
     public void onSaveButton(ActionEvent actionEvent) {
         if (validateFields()) {
@@ -101,7 +99,8 @@ public class ModifyPart implements Initializable {
     }
 
     /*
-    Validates part fields.
+    Returns true if all fields pass validation, or false if any of the fields fail validation.
+    If the field data passes validation it is saved to the class variables that temporarily hold part field data.
     */
     public boolean validateFields() {
         if (Inventory.stringCheck(nameField.getText())) {

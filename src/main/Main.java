@@ -7,6 +7,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 /*
 The Main class is used to load and display the Inventory GUI.
+
+"FUTURE ENHANCEMENT"
+If this application were to be updated, a future enhancement that could extend the functionality of the application
+would be the ability to save data to a database or local hard drive.
 */
 public class Main extends Application {
     @Override

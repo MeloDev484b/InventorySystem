@@ -6,12 +6,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.InHouse;
 import model.Outsourced;
-
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import static java.lang.Character.isAlphabetic;
 
 /*
@@ -23,7 +21,6 @@ public class AddPart implements Initializable {
     public TextField idField, nameField, invField, priceCostField, maxField, minField, seventhArgField;
     public Button saveButton, cancelButton;
     public Label seventhArgLabel;
-
     private String name;
     private double price;
     private int stock;
@@ -32,6 +29,9 @@ public class AddPart implements Initializable {
     private int machineId;
     private String companyName;
 
+    /*
+    On initialization, the inHouseRadio is set to selected.
+    */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         inHouseRadio.setSelected(true);
@@ -46,8 +46,7 @@ public class AddPart implements Initializable {
     }
 
     /*
-    Enter 0 to check for Strings that start with an alpha character,
-    enter 1 to check for integers, enter 2 to check for doubles.
+    Generates an Alert, and sets the text based on the field code entered.
     */
     public static void warnUserValidation(int warningNumber) {
         Alert warning = new Alert(Alert.AlertType.WARNING);
@@ -82,6 +81,10 @@ public class AddPart implements Initializable {
         warning.show();
     }
 
+    /*
+    Returns true if all fields pass validation, or false if any of the fields fail validation.
+    If the field data passes validation it is saved to the class variables that temporarily hold part field data.
+    */
     public boolean validateFields() {
         if (Inventory.stringCheck(nameField.getText())) {
             name = nameField.getText();
@@ -149,12 +152,11 @@ public class AddPart implements Initializable {
 
 
     /*
-    Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create either
-    an inHouse or Outsourced object. After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
+    Checks if the inHouseRadio is selected and then uses class part data variables to create an appropriate part.
+    After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
     */
     public void onSaveButton(ActionEvent actionEvent) {
         boolean inHouse = inHouseRadio.isSelected();
-        boolean outsourced = outsourcedRadio.isSelected();
         int id = Inventory.partId;
         if (validateFields()) {
             if (inHouse) {
@@ -176,7 +178,7 @@ public class AddPart implements Initializable {
     }
 
     /*
-    Changes the label text to reflect the selected radio button.
+    Checks if the inHouseRadio is selected and appropriately sets the label text.
     */
     public void onRadioSelect(ActionEvent actionEvent) {
         if (inHouseRadio.isSelected()) {

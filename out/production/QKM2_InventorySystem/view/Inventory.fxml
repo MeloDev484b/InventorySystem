@@ -29,9 +29,9 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></Label>
-            <Button fx:id="addPartButton" layoutX="20.0" layoutY="250.0" mnemonicParsing="false" onAction="#onAddPartButton" text="Add" />
-            <Button fx:id="deletePartButton" layoutX="68.0" layoutY="250.0" mnemonicParsing="false" onAction="#onDeletePartButton" text="Delete" />
-            <Button fx:id="modifyPartButton" layoutX="365.0" layoutY="250.0" mnemonicParsing="false" onAction="#onModifyPartButton" text="Modify" />
+            <Button fx:id="addPartButton" layoutX="259.0" layoutY="250.0" mnemonicParsing="false" onAction="#onAddPartButton" text="Add" />
+            <Button fx:id="deletePartButton" layoutX="369.0" layoutY="250.0" mnemonicParsing="false" onAction="#onDeletePartButton" text="Delete" />
+            <Button fx:id="modifyPartButton" layoutX="306.0" layoutY="250.0" mnemonicParsing="false" onAction="#onModifyPartButton" text="Modify" />
             <TextField fx:id="searchPartsTextField" layoutX="269.0" layoutY="10.0" onKeyPressed="#onSearchPartsTextField" promptText="Search parts. . ." />
          </children>
       </AnchorPane>
@@ -52,9 +52,9 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <Button fx:id="addProductButton" layoutX="21.0" layoutY="250.0" mnemonicParsing="false" onAction="#onAddProductButton" text="Add" />
-            <Button fx:id="deleteProductButton" layoutX="69.0" layoutY="250.0" mnemonicParsing="false" onAction="#onDeleteProductButton" text="Delete" />
-            <Button fx:id="modifyProductButton" layoutX="366.0" layoutY="250.0" mnemonicParsing="false" onAction="#onModifyProductButton" text="Modify" />
+            <Button fx:id="addProductButton" layoutX="258.0" layoutY="250.0" mnemonicParsing="false" onAction="#onAddProductButton" text="Add" />
+            <Button fx:id="deleteProductButton" layoutX="368.0" layoutY="250.0" mnemonicParsing="false" onAction="#onDeleteProductButton" text="Delete" />
+            <Button fx:id="modifyProductButton" layoutX="305.0" layoutY="250.0" mnemonicParsing="false" onAction="#onModifyProductButton" text="Modify" />
             <TextField fx:id="searchProductsTextField" layoutX="270.0" layoutY="10.0" onKeyPressed="#onSearchProductsTextField" promptText="Search products. . ." />
          </children>
       </AnchorPane>

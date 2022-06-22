@@ -18,12 +18,10 @@ import model.Part;
 import model.Product;
 import model.InHouse;
 import model.Outsourced;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import static java.lang.Character.isAlphabetic;
 
 /*
@@ -57,7 +55,6 @@ public class Inventory implements Initializable {
     public TextField searchPartsTextField, searchProductsTextField;
     public TableColumn productIdColumn, productNameColumn, productInventoryLevelColumn, productPricePerUnitColumn;
     public Button addProductButton, deleteProductButton, modifyProductButton;
-
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
     public static Part selectedPart = null;
@@ -70,7 +67,6 @@ public class Inventory implements Initializable {
     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Main Screen active");
         partsTableView.setItems(allParts);
         productsTableView.setItems(allProducts);
 
@@ -118,7 +114,8 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Returns a Part contained in allParts that matches the supplied partId integer argument.
+    Returns a Part contained in allParts that matches the supplied partId integer argument. If no part is matched,
+    the user is shown a warning that the part was not found and returns null.
     */
     public static Part lookupPart(int partId) {
         ObservableList <Part> foundParts = getAllParts();
@@ -127,11 +124,15 @@ public class Inventory implements Initializable {
                 return part;
             }
         }
+        Alert notFound = new Alert(Alert.AlertType.INFORMATION);
+        notFound.setContentText("Part not found.");
+        notFound.show();
         return null;
     }
 
     /*
-    Returns a Product contained in allProducts that matches the supplied productId integer argument.
+    Returns a Product contained in allProducts that matches the supplied productId integer argument. If no
+    product is matched, the user is shown a warning that the product was not found and returns null.
     */
     public Product lookupProduct(int productId) {
         ObservableList <Product> foundProducts = getAllProducts();
@@ -140,6 +141,9 @@ public class Inventory implements Initializable {
                 return product;
             }
         }
+        Alert notFound = new Alert(Alert.AlertType.INFORMATION);
+        notFound.setContentText("Product not found.");
+        notFound.show();
         return null;
     }
 
@@ -159,6 +163,9 @@ public class Inventory implements Initializable {
             return partsByName;
         }
         else {
+            Alert notFound = new Alert(Alert.AlertType.INFORMATION);
+            notFound.setContentText("Part not found.");
+            notFound.show();
             return allParts;
         }
     }
@@ -179,6 +186,9 @@ public class Inventory implements Initializable {
             return productsByName;
         }
         else {
+            Alert notFound = new Alert(Alert.AlertType.INFORMATION);
+            notFound.setContentText("Product not found.");
+            notFound.show();
             return allProducts;
         }
     }
@@ -228,8 +238,7 @@ public class Inventory implements Initializable {
     // Helper methods
     /*
     Checks allParts for a partId that matches the Part.getId() and adds it to the partsById list.
-    If no Parts match, the original allParts list is returned and the user is notified that the searched part
-    does not exist.
+    If no Parts match, the original allParts list is returned.
     */
     public static ObservableList<Part> partById(Part partToId) {
         if (partToId != null) {
@@ -253,8 +262,7 @@ public class Inventory implements Initializable {
 
     /*
     Checks allProducts for a productId that matches the Product.getId() and adds it to the productsById list.
-    If no Products match, the original allProducts list is returned and the user is notified that the searched product
-    does not exist.
+    If no Products match, the original allProducts list is returned.
     */
     public ObservableList<Product> productById(Product productToId) {
         if (productToId != null) {
@@ -277,7 +285,7 @@ public class Inventory implements Initializable {
     }
 
     /*
-    When supplied int value of 0, partId is incremented and returned, when supplied an int value of 1
+    When supplied int value of 0, partId is incremented and returned. When supplied any other int value
     productId is incremented and returned.
     */
     public static int incrementId(int selection) {
@@ -314,6 +322,8 @@ public class Inventory implements Initializable {
     public static Product getProduct(int index) {return allProducts.get(index);}
 
     /*
+    Sets selectedProduct to null to ensure the user does not unintentionally delete or modify a product when they
+    return to the ProductsTableView.
     Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
     */
     public void setSelectedPart() {
@@ -322,7 +332,9 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Sets selectedProduct to the Product that the user clicks in the PartsTableView.
+    Sets selectedPart to null to ensure the user does not unintentionally delete or modify a part when they
+    return to the PartsTableView.
+    Sets selectedProduct to the Product that the user clicks in the ProductsTableView.
     */
     public void setSelectedProduct() {
         selectedPart = null;
@@ -330,7 +342,15 @@ public class Inventory implements Initializable {
     }
 
     /*
+     Checks for a NumberFormatException to determine if the String argument is an integer.
      Returns true if an int can be parsed from the String argument.
+     Returns false if the argument is null, or if a NumberFormatException occurs.
+
+    "RUNTIME ERROR"
+    Initially I ran into runtime errors in the Inventory GUI as I attempted to parse Strings for integers.
+    When the Strings did not contain the correct type of data, I would run into a NumberFormatException.
+    I created methods to catch these exceptions and return false to indicate the String did not contain
+    an integer.
     */
     public static boolean intCheck(String checkMe) {
         if (checkMe == null) {
@@ -345,6 +365,17 @@ public class Inventory implements Initializable {
         return true;
     }
 
+    /*
+     Checks for a NumberFormatException to determine if the String argument is a double.
+     Returns true if a double can be parsed from the String argument. Returns false if the argument is null,
+     or if a NumberFormatException occurs.
+
+    "RUNTIME ERROR"
+    Initially I ran into runtime errors in the Inventory GUI as I attempted to parse Strings for doubles.
+    When the Strings did not contain the correct type of data, I would run into a NumberFormatException.
+    I created methods to catch these exceptions and return false to indicate the String did not contain
+    a double.
+    */
     public static boolean doubleCheck(String checkMe) {
         if (checkMe == null) {
             return false;
@@ -358,6 +389,11 @@ public class Inventory implements Initializable {
         return true;
     }
 
+    /*
+    Runs isAlphabetic against the first character to determine if the String argument begins with an alphabetic
+    character. Returns true if the String argument begins with an alphabetic character, returns false if the
+    argument is null, an empty string, or begins with a non-alphabetic character.
+    */
     public static boolean stringCheck(String checkMe) {
         if (checkMe == null || checkMe == "") {
             return false;
@@ -370,6 +406,9 @@ public class Inventory implements Initializable {
         }
     }
 
+    /*
+    Generates an information alert with text that depends on whether the user has selected a Part or a Product.
+    */
     private void showInfoMessage() {
         Alert info = new Alert(Alert.AlertType.INFORMATION);
         if (selectedPart != null) {
@@ -381,6 +420,9 @@ public class Inventory implements Initializable {
         info.show();
     }
 
+    /*
+    Generates warning alert with text that depends on the supplied integer argument.
+    */
     private void selectBeforeDeleteWarning(int warningType) {
         Alert deleteWarning = new Alert(Alert.AlertType.WARNING);
         if (warningType == 0) {
@@ -394,7 +436,7 @@ public class Inventory implements Initializable {
 
     // fxml methods
     /*
-    Calls setSelectedPart() when the user clicks on the PartsTableView.
+    Calls setSelectedPart() when the user clicks on the PartsTableView, and it is not empty.
     */
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
         if (!partsTableView.getSelectionModel().isEmpty()) {
@@ -403,7 +445,7 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Calls setSelectedProduct() when the user clicks on the ProductsTableView.
+    Calls setSelectedProduct() when the user clicks on the ProductsTableView, and it is not empty.
     */
     public void onProductsTableViewClick(MouseEvent mouseEvent) {
         if (!productsTableView.getSelectionModel().isEmpty()) {
@@ -435,7 +477,12 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Calls deletePart() on the selectedPart when the user clicks the deletePartButton, then resets PartsTableView.
+    If selectedPart is not null an alert is displayed to the user. If the user clicks OK,
+    deletePart() is called on the selectedPart, and selectedPart is set to null so it no longer
+    stores a copy of the clicked part.
+    If the user clicks CANCEL or closes the window, an info panel is displayed to the user to inform them
+    the selectedPart has not been deleted. The selectedPart is then set to null.
+    If the user has not selected a part, the user is warned they must select a part before attempting to delete it.
     */
     public void onDeletePartButton(ActionEvent actionEvent) {
         if (selectedPart != null) {
@@ -461,7 +508,13 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Calls deleteProduct() on the selectedProduct when the user clicks the deleteProductButton.
+    If selectedProduct is not null an alert is displayed to the user. If the user clicks OK,
+    deleteProduct() is called on the selectedProduct, and selectedProduct is set to null so it no longer
+    stores a copy of the clicked Product.
+    If the user clicks CANCEL or closes the window, an info panel is displayed to the user to inform them
+    the selectedProduct has not been deleted. The selectedProduct is then set to null.
+    If the user has not selected a Product, the user is warned they must select a Product before attempting to
+    delete it.
     */
     public void onDeleteProductButton(ActionEvent actionEvent) {
         if (selectedProduct != null) {
@@ -496,6 +549,7 @@ public class Inventory implements Initializable {
 
     /*
     Checks to see if the user has selected a part, then loads and displays the ModifyPart GUI if they have.
+    If the user has not selected a part, they are warned to select a part before attempting to modify it.
     */
     public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
         if (selectedPart != null) {
@@ -514,6 +568,7 @@ public class Inventory implements Initializable {
 
     /*
     Checks to see if the user has selected a Product, then loads and displays the ModifyProduct GUI if they have.
+    If the user has not selected a product, they are warned to select a product before attempting to modify it.
     */
     public void onModifyProductButton(ActionEvent actionEvent) throws IOException {
         if (selectedProduct != null) {
@@ -532,19 +587,20 @@ public class Inventory implements Initializable {
     }
 
     /*
-    Uses System.exit() to exit the application
+    Calls System.exit() to exit the application
     */
     public void onExitButton(ActionEvent actionEvent) {
-        System.out.println("Exit button pressed");
         System.exit(0);
     }
 
     /*
-    When the user presses enter after typing in the searchPartsTextField, the PartsTableView is set to show
-    the results of lookupPart().
+    When the user presses enter after typing in the searchPartsTextField, or the searchPartsTextField is left empty
+    the contents of the TextField are checked to determine if they are an integer or not. If the contents are an
+    integer, the partsTableView is set to the results of partById search. If the contents are not an integer, the
+    partsTableView is set to the results of a part name search.
     */
     public void onSearchPartsTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || searchPartsTextField.getText() == "") {
+        if (keyEvent.getCode() == KeyCode.ENTER || searchPartsTextField.getText() == "") {
             if (intCheck(searchPartsTextField.getText())) {
                 int partInt = Integer.parseInt(searchPartsTextField.getText());
                 partsTableView.setItems(partById(lookupPart(partInt)));
@@ -556,11 +612,13 @@ public class Inventory implements Initializable {
     }
 
     /*
-    When the user presses enter after typing in the searchProductsTextField, the ProductsTableView is set to show
-    the results of lookupProduct().
+    When the user presses enter after typing in the searchProductsTextField, or the searchProductsTextField
+    is left empty, the contents of the TextField are checked to determine if they are an integer or not.
+    If the contents are an integer, the productsTableView is set to the results of productById search.
+    If the contents are not an integer, the productsTableView is set to the results of a product name search.
     */
     public void onSearchProductsTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || searchPartsTextField.getText() == "") {
+        if (keyEvent.getCode() == KeyCode.ENTER || searchPartsTextField.getText() == "") {
             if (intCheck(searchProductsTextField.getText())) {
                 int productInt = Integer.parseInt(searchProductsTextField.getText());
                 productsTableView.setItems(productById(lookupProduct(productInt)));

@@ -21,8 +21,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-// TODO validate input
-
 /*
 The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
@@ -47,6 +45,12 @@ public class ModifyProduct implements Initializable {
     private Part selectedAssociatedPart = null;
     private Product temp;
     private int savedIndex;
+    /*
+    Initializes ModifyProduct by saving the index of the selectedProduct, saves the selectedProduct in a temp
+    Product variable (to ensure the original product is not edited before confirmation), productIntake() is called
+    to process the selectedProduct data, and the TableViews are set to the appropriate data and their columns are
+    initialized.
+    */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         savedIndex = Inventory.getIndex(Inventory.selectedProduct);
@@ -68,6 +72,10 @@ public class ModifyProduct implements Initializable {
         aPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
+    /*
+    Ensures the temp Product has been initialized and if it has, ModifyProduct's TextFields are set to the values
+    that the temp Product holds.
+    */
     public void productIntake() {
         if (temp != null) {
             idField.setText(String.valueOf(temp.getId()));
@@ -79,12 +87,20 @@ public class ModifyProduct implements Initializable {
         }
     }
 
+    /*
+    If the TableView that is generated from Inventory's allParts list is not null, the selectedPart is set to
+    the selected item in the inventoryPartsTableView.
+    */
     public void setSelectedPart() throws NullPointerException {
         if (inventoryPartsTableView != null) {
             selectedPart = (Part) inventoryPartsTableView.getSelectionModel().getSelectedItem();
         }
     }
 
+    /*
+    If the TableView that is generated from temp's associatedParts list is not null, the selectedAssociatedPart
+    is set to the selected item in the associatedPartsTableView.
+    */
     public void setSelectedAssociatedPart() throws NullPointerException {
         if (associatedPartsTableView != null) {
             selectedAssociatedPart = associatedPartsTableView.getSelectionModel().getSelectedItem();
@@ -92,13 +108,17 @@ public class ModifyProduct implements Initializable {
     }
 
     /*
-Uses Stage.close() to close the AddProduct window.
-*/
+    Uses Stage.close() to close the AddProduct window.
+    */
     private void closeWindow() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /*
+    Returns true if all fields pass validation, or false if any of the fields fail validation.
+    If the field data passes validation it is saved to the class variables that temporarily hold part field data.
+    */
     public boolean validateFields() {
         if (Inventory.stringCheck(nameField.getText())) {
             name = nameField.getText();
@@ -153,6 +173,13 @@ Uses Stage.close() to close the AddProduct window.
         closeWindow();
     }
 
+    /*
+    Checks to ensure the user has selected a part from the inventoryPartsTableView and, if they have,
+    it is added to temp's associatedParts list. The associatedPartsTableView is then reset to the current
+    associatedParts list.
+    If the user has not selected a part, they are warned that they must select a part before attempting to add it
+    to the associatedPartsList.
+    */
     public void onAddAssociatedPartButton(ActionEvent actionEvent) {
         if (selectedPart != null) {
             temp.addAssociatedPart(selectedPart);
@@ -165,6 +192,14 @@ Uses Stage.close() to close the AddProduct window.
         }
     }
 
+    /*
+    Checks to ensure the user has selected a part from the associatedPartsTableView and, if they have,
+    the user is prompted to confirm the removal from temp's associatedParts list.
+    If the user confirms removal, the part is removed from the associatedParts list and associatedPartsTableView
+    is then reset to the current associatedParts list.
+    If the user has not selected a part, they are warned that they must select a part before attempting to add it
+    to the associatedPartsList.
+    */
     public void onRemoveAssociatedPartButton(ActionEvent actionEvent) {
         if (selectedAssociatedPart != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
@@ -205,8 +240,14 @@ Uses Stage.close() to close the AddProduct window.
         }
     }
 
+    /*
+    If the user presses the Enter key or the TextField is left empty, an appropriate search is performed on the
+    contents of the TextField. The contents are first checked if it contains an integer. If the contents of the
+    field is an integer, the inventory parts are searched for a matching ID. If the contents are a String,
+    the inventory is searched for a matching name.
+    */
     public void onInventoryPartsSearchTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || inventoryPartsSearchTextField.getText() == "") {
+        if (keyEvent.getCode() == KeyCode.ENTER || inventoryPartsSearchTextField.getText() == "") {
             if (Inventory.intCheck(inventoryPartsSearchTextField.getText())) {
                 int partInt = Integer.parseInt(inventoryPartsSearchTextField.getText());
                 inventoryPartsTableView.setItems(Inventory.partById(Inventory.lookupPart(partInt)));
@@ -217,10 +258,16 @@ Uses Stage.close() to close the AddProduct window.
         }
     }
 
+    /*
+    Calls setSelectedPart() when the user clicks on the inventoryPartsTableView.
+     */
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
     }
 
+    /*
+    Calls setSelectedAssociatedPart when the user clicks on the associatedPartTableView.
+     */
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {
         setSelectedAssociatedPart();
     }

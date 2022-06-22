@@ -13,7 +13,7 @@ import model.Outsourced;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/*
+/**
 The ModifyPart class is used to modify InHouse and Outsourced objects and save the modified Part at the
 original index.
 */
@@ -33,7 +33,7 @@ public class ModifyPart implements Initializable {
     private String companyName;
     private int savedIndex;
 
-    /*
+    /**
     Checks the subclass of the Part to be modified and checks the appropriate radio button. Stores the selectedPart
     from Inventory in the respective Part variable. The label for the last argument is set to the appropriate text
     by calling setLabel(), then partIntake() is called to fill the TextFields with the Part's data.
@@ -53,7 +53,7 @@ public class ModifyPart implements Initializable {
         partIntake();
     }
 
-    /*
+    /**
     When the user clicks the saveButton the TextField data is saved in variables and then an appropriate
     subclass is created with that data. The inHouseRadio button is checked to see if it is selected, if it is
     selected, an InHouse part is created with the appropriate arguments, and if it is not, an Outsourced part
@@ -82,14 +82,14 @@ public class ModifyPart implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /*
+    /**
     Uses Stage.close() to close the ModifyPart window and sets Inventory.selectedPart to null.
     */
     private void closeWindow() {
@@ -98,7 +98,7 @@ public class ModifyPart implements Initializable {
         stage.close();
     }
 
-    /*
+    /**
     Returns true if all fields pass validation, or false if any of the fields fail validation.
     If the field data passes validation it is saved to the class variables that temporarily hold part field data.
     */
@@ -167,14 +167,14 @@ public class ModifyPart implements Initializable {
         return true;
     }
 
-    /*
+    /**
     Changes the label by calling setLabel() when the user selects a radio button.
     */
     public void onRadioSelect(ActionEvent actionEvent) {
         setLabel();
     }
 
-    /*
+    /**
     Changes the label text to reflect the selected radio button.
     */
     public void setLabel() {
@@ -186,7 +186,7 @@ public class ModifyPart implements Initializable {
         }
     }
 
-    /*
+    /**
     Sets the TextFields to the appropriate text from the Part stored in either InhousePart or OutsourcedPart.
     */
     public void partIntake() {

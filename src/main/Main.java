@@ -5,8 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-/*
-The Main class is used to load and display the Inventory GUI.
+/** The Main class is used to load and display the Inventory GUI.
 
 "FUTURE ENHANCEMENT"
 If this application were to be updated, a future enhancement that could extend the functionality of the application
@@ -20,8 +19,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-/*
-Entry point for the program.
+/** Entry point for the program.
 */
     public static void main(String[] args) {
         launch(args);

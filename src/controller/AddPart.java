@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import static java.lang.Character.isAlphabetic;
 
-/*
+/**
 The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
 */
 public class AddPart implements Initializable {
@@ -29,7 +29,7 @@ public class AddPart implements Initializable {
     private int machineId;
     private String companyName;
 
-    /*
+    /**
     On initialization, the inHouseRadio is set to selected.
     */
     @Override
@@ -37,7 +37,7 @@ public class AddPart implements Initializable {
         inHouseRadio.setSelected(true);
     }
 
-    /*
+    /**
     Uses Stage.close() to close the AddPart window.
     */
     private void closeWindow() {
@@ -45,7 +45,7 @@ public class AddPart implements Initializable {
         stage.close();
     }
 
-    /*
+    /**
     Generates an Alert, and sets the text based on the field code entered.
     */
     public static void warnUserValidation(int warningNumber) {
@@ -81,7 +81,7 @@ public class AddPart implements Initializable {
         warning.show();
     }
 
-    /*
+    /**
     Returns true if all fields pass validation, or false if any of the fields fail validation.
     If the field data passes validation it is saved to the class variables that temporarily hold part field data.
     */
@@ -151,7 +151,7 @@ public class AddPart implements Initializable {
     }
 
 
-    /*
+    /**
     Checks if the inHouseRadio is selected and then uses class part data variables to create an appropriate part.
     After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
     */
@@ -170,14 +170,14 @@ public class AddPart implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /*
+    /**
     Checks if the inHouseRadio is selected and appropriately sets the label text.
     */
     public void onRadioSelect(ActionEvent actionEvent) {

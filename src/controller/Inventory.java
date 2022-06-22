@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import static java.lang.Character.isAlphabetic;
 
-/*
+/**
 The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
 Objects in allParts and allProducts can be added, deleted, and modified by the user.
 */
@@ -62,7 +62,7 @@ public class Inventory implements Initializable {
     public static int partId = 1000;
     public static int productId = 1000;
 
-    /*
+    /**
     Initializes allParts and allProducts and sets the respective TableView to display the objects they contain.
     */
     @Override
@@ -99,21 +99,21 @@ public class Inventory implements Initializable {
     }
 
     // UML-specified methods
-    /*
+    /**
     Uses ObservableList.add() to add a Part object to allParts.
     */
     public static void addPart(Part newPart) {
         allParts.add(newPart);
     }
 
-    /*
+    /**
     Uses ObservableList.add() to add a Product object to allProducts.
     */
     public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
 
-    /*
+    /**
     Returns a Part contained in allParts that matches the supplied partId integer argument. If no part is matched,
     the user is shown a warning that the part was not found and returns null.
     */
@@ -130,7 +130,7 @@ public class Inventory implements Initializable {
         return null;
     }
 
-    /*
+    /**
     Returns a Product contained in allProducts that matches the supplied productId integer argument. If no
     product is matched, the user is shown a warning that the product was not found and returns null.
     */
@@ -147,7 +147,7 @@ public class Inventory implements Initializable {
         return null;
     }
 
-    /*
+    /**
     Checks allParts for a partName that matches the Part.getName() and adds it to the partsByName list.
     If no Parts match, the original allParts list is returned and the user is notified that the searched part
     does not exist.
@@ -170,7 +170,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks allProducts for a ProductName that matches the Product.getName() and adds it to the ProductsByName list.
     If no Products match, the original allProducts list is returned and the user is notified that the searched Product
     does not exist.
@@ -193,42 +193,42 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Uses ObservableList.set() to replace a Part in allParts, at the specified index.
     */
     public static void updatePart(int index, Part updatedPart) {
         allParts.set(index, updatedPart);
     }
 
-    /*
+    /**
     Uses ObservableList.set() to replace a Product in allProducts, at the specified index.
     */
     public static void updateProduct(int index, Product updatedProduct) {
         allProducts.set(index, updatedProduct);
     }
 
-    /*
+    /**
     Uses ObservableList.remove() to delete a Part in allParts. Returns true if the Part is deleted.
     */
     public static boolean deletePart(Part deleteMe) {
         return allParts.remove(deleteMe);
     }
 
-    /*
+    /**
     Uses ObservableList.remove() to delete a Product in allProducts. Returns true if the Product is deleted.
     */
     public static boolean deleteProduct(Product deleteMe) {
         return allProducts.remove(deleteMe);
     }
 
-    /*
+    /**
     Getter that returns the ObservableList allParts.
     */
     public static ObservableList getAllParts() {
         return allParts;
     }
 
-    /*
+    /**
     Getter that returns the ObservableList allProducts.
     */
     public ObservableList getAllProducts() {
@@ -236,7 +236,7 @@ public class Inventory implements Initializable {
     }
 
     // Helper methods
-    /*
+    /**
     Checks allParts for a partId that matches the Part.getId() and adds it to the partsById list.
     If no Parts match, the original allParts list is returned.
     */
@@ -260,7 +260,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks allProducts for a productId that matches the Product.getId() and adds it to the productsById list.
     If no Products match, the original allProducts list is returned.
     */
@@ -284,7 +284,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     When supplied int value of 0, partId is incremented and returned. When supplied any other int value
     productId is incremented and returned.
     */
@@ -297,31 +297,31 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Uses ObservableList.indexOf() to return an integer index of the specified Part.
     */
     public static int getIndex(Part part) {
         return allParts.indexOf(part);
     }
 
-    /*
+    /**
     Uses ObservableList.indexOf() to return an integer index of the specified Product.
     */
     public static int getIndex (Product product) {return allProducts.indexOf(product);}
 
-    /*
+    /**
     Uses ObservableList.get() to return a Part at the specified index.
     */
     public static Part getPart(int index) {
         return allParts.get(index);
     }
 
-    /*
+    /**
     Uses ObservableList.get() to return a Product at the specified index.
     */
     public static Product getProduct(int index) {return allProducts.get(index);}
 
-    /*
+    /**
     Sets selectedProduct to null to ensure the user does not unintentionally delete or modify a product when they
     return to the ProductsTableView.
     Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
@@ -331,7 +331,7 @@ public class Inventory implements Initializable {
         selectedPart = getPart(getIndex((Part) partsTableView.getSelectionModel().getSelectedItem()));
     }
 
-    /*
+    /**
     Sets selectedPart to null to ensure the user does not unintentionally delete or modify a part when they
     return to the PartsTableView.
     Sets selectedProduct to the Product that the user clicks in the ProductsTableView.
@@ -341,7 +341,7 @@ public class Inventory implements Initializable {
         selectedProduct = getProduct(getIndex((Product) productsTableView.getSelectionModel().getSelectedItem()));
     }
 
-    /*
+    /**
      Checks for a NumberFormatException to determine if the String argument is an integer.
      Returns true if an int can be parsed from the String argument.
      Returns false if the argument is null, or if a NumberFormatException occurs.
@@ -365,7 +365,7 @@ public class Inventory implements Initializable {
         return true;
     }
 
-    /*
+    /**
      Checks for a NumberFormatException to determine if the String argument is a double.
      Returns true if a double can be parsed from the String argument. Returns false if the argument is null,
      or if a NumberFormatException occurs.
@@ -389,7 +389,7 @@ public class Inventory implements Initializable {
         return true;
     }
 
-    /*
+    /**
     Runs isAlphabetic against the first character to determine if the String argument begins with an alphabetic
     character. Returns true if the String argument begins with an alphabetic character, returns false if the
     argument is null, an empty string, or begins with a non-alphabetic character.
@@ -406,7 +406,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Generates an information alert with text that depends on whether the user has selected a Part or a Product.
     */
     private void showInfoMessage() {
@@ -420,7 +420,7 @@ public class Inventory implements Initializable {
         info.show();
     }
 
-    /*
+    /**
     Generates warning alert with text that depends on the supplied integer argument.
     */
     private void selectBeforeDeleteWarning(int warningType) {
@@ -435,7 +435,7 @@ public class Inventory implements Initializable {
     }
 
     // fxml methods
-    /*
+    /**
     Calls setSelectedPart() when the user clicks on the PartsTableView, and it is not empty.
     */
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
@@ -444,7 +444,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls setSelectedProduct() when the user clicks on the ProductsTableView, and it is not empty.
     */
     public void onProductsTableViewClick(MouseEvent mouseEvent) {
@@ -453,7 +453,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Loads and displays the AddPart GUI.
     */
     public void onAddPartButton(ActionEvent event) throws IOException {
@@ -465,7 +465,7 @@ public class Inventory implements Initializable {
         addPartStage.show();
     }
 
-    /*
+    /**
     Loads and displays the AddProduct GUI.
     */
     public void onAddProductButton(ActionEvent event) throws IOException{
@@ -476,7 +476,7 @@ public class Inventory implements Initializable {
         modifyProductStage.show();
     }
 
-    /*
+    /**
     If selectedPart is not null an alert is displayed to the user. If the user clicks OK,
     deletePart() is called on the selectedPart, and selectedPart is set to null so it no longer
     stores a copy of the clicked part.
@@ -507,7 +507,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     If selectedProduct is not null an alert is displayed to the user. If the user clicks OK,
     deleteProduct() is called on the selectedProduct, and selectedProduct is set to null so it no longer
     stores a copy of the clicked Product.
@@ -547,7 +547,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks to see if the user has selected a part, then loads and displays the ModifyPart GUI if they have.
     If the user has not selected a part, they are warned to select a part before attempting to modify it.
     */
@@ -566,7 +566,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks to see if the user has selected a Product, then loads and displays the ModifyProduct GUI if they have.
     If the user has not selected a product, they are warned to select a product before attempting to modify it.
     */
@@ -586,14 +586,14 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls System.exit() to exit the application
     */
     public void onExitButton(ActionEvent actionEvent) {
         System.exit(0);
     }
 
-    /*
+    /**
     When the user presses enter after typing in the searchPartsTextField, or the searchPartsTextField is left empty
     the contents of the TextField are checked to determine if they are an integer or not. If the contents are an
     integer, the partsTableView is set to the results of partById search. If the contents are not an integer, the
@@ -611,7 +611,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /*
+    /**
     When the user presses enter after typing in the searchProductsTextField, or the searchProductsTextField
     is left empty, the contents of the TextField are checked to determine if they are an integer or not.
     If the contents are an integer, the productsTableView is set to the results of productById search.

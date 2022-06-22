@@ -40,7 +40,7 @@ public class AddProduct implements Initializable {
     private Part selectedAssociatedPart = null;
     private Product temp;
 
-    /*
+    /**
     On initialization a temporary Product is created and both TableViews are set to their respective ObservableLists.
     Both TableView columns are set to the correct properties.
     */
@@ -63,7 +63,7 @@ public class AddProduct implements Initializable {
         aPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    /*
+    /**
     The TableView item the user clicks on is checked, and if it is not null, selectedPart is set to the clicked part
     in the TableView.
     */
@@ -73,7 +73,7 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     The TableView item the user clicks on is checked, and if it is not null, selectedAssociatedPart is set to the
     clicked part in the TableView.
     */
@@ -83,14 +83,14 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /*
+    /**
     Uses Stage.close() to close the AddProduct window.
     */
     private void closeWindow() {
@@ -98,7 +98,7 @@ public class AddProduct implements Initializable {
         stage.close();
     }
 
-    /*
+    /**
     Returns true if all fields pass validation, or false if any of the fields fail validation.
     If the field data passes validation it is saved to the class variables that temporarily hold product field data.
     */
@@ -149,7 +149,7 @@ public class AddProduct implements Initializable {
         return true;
     }
 
-    /*
+    /**
     Checks if the user has selected a part. If the user has selected an part, the selected part is added to the
     associated parts list in the temporary Product. The associatedPartsTableView is then reset to the current
     temp Product's associatedPartsList.
@@ -168,7 +168,7 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks if the user has selected a part. If the user has selected a part, the user is prompted to confirm
     removal of the part. If the window is closed, or the cancel button is clicked, the part is not removed.
     If the removal is confirmed, the selected part is removed from the temp Product's associated part list,
@@ -200,7 +200,7 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create a Product.
     After the Product is added to allProducts, Inventory.productId is incremented and the window is closed.
     */
@@ -218,7 +218,7 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     If the user presses the Enter key or the TextField is left empty, an appropriate search is performed on the
     contents of the TextField. The contents are first checked if it contains an integer. If the contents of the
     field is an integer, the inventory parts are searched for a matching ID. If the contents are a String,
@@ -236,14 +236,14 @@ public class AddProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls setSelectedPart() when the user clicks on the InventoryPartsTableView.
     */
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
     }
 
-    /*
+    /**
     Calls setSelectedPart() when the user clicks on the AssociatedPartTableView.
     */
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {

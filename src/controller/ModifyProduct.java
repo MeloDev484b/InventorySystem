@@ -21,8 +21,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/*
-The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
+/** The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
 public class ModifyProduct implements Initializable {
     Stage confirmRemovalStage = new Stage();
@@ -45,8 +44,7 @@ public class ModifyProduct implements Initializable {
     private Part selectedAssociatedPart = null;
     private Product temp;
     private int savedIndex;
-    /*
-    Initializes ModifyProduct by saving the index of the selectedProduct, saves the selectedProduct in a temp
+    /** Initializes ModifyProduct by saving the index of the selectedProduct, saves the selectedProduct in a temp
     Product variable (to ensure the original product is not edited before confirmation), productIntake() is called
     to process the selectedProduct data, and the TableViews are set to the appropriate data and their columns are
     initialized.
@@ -72,7 +70,7 @@ public class ModifyProduct implements Initializable {
         aPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    /*
+    /**
     Ensures the temp Product has been initialized and if it has, ModifyProduct's TextFields are set to the values
     that the temp Product holds.
     */
@@ -87,7 +85,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     If the TableView that is generated from Inventory's allParts list is not null, the selectedPart is set to
     the selected item in the inventoryPartsTableView.
     */
@@ -97,7 +95,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     If the TableView that is generated from temp's associatedParts list is not null, the selectedAssociatedPart
     is set to the selected item in the associatedPartsTableView.
     */
@@ -107,7 +105,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Uses Stage.close() to close the AddProduct window.
     */
     private void closeWindow() {
@@ -115,7 +113,7 @@ public class ModifyProduct implements Initializable {
         stage.close();
     }
 
-    /*
+    /**
     Returns true if all fields pass validation, or false if any of the fields fail validation.
     If the field data passes validation it is saved to the class variables that temporarily hold part field data.
     */
@@ -166,14 +164,14 @@ public class ModifyProduct implements Initializable {
         return true;
     }
 
-    /*
+    /**
     Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /*
+    /**
     Checks to ensure the user has selected a part from the inventoryPartsTableView and, if they have,
     it is added to temp's associatedParts list. The associatedPartsTableView is then reset to the current
     associatedParts list.
@@ -192,7 +190,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Checks to ensure the user has selected a part from the associatedPartsTableView and, if they have,
     the user is prompted to confirm the removal from temp's associatedParts list.
     If the user confirms removal, the part is removed from the associatedParts list and associatedPartsTableView
@@ -224,7 +222,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create a Product.
     After the Product is added to allProducts, Inventory.productId is incremented and the window is closed.
     */
@@ -240,7 +238,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     If the user presses the Enter key or the TextField is left empty, an appropriate search is performed on the
     contents of the TextField. The contents are first checked if it contains an integer. If the contents of the
     field is an integer, the inventory parts are searched for a matching ID. If the contents are a String,
@@ -258,14 +256,14 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /*
+    /**
     Calls setSelectedPart() when the user clicks on the inventoryPartsTableView.
      */
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
     }
 
-    /*
+    /**
     Calls setSelectedAssociatedPart when the user clicks on the associatedPartTableView.
      */
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {

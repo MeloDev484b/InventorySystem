@@ -4,10 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -17,6 +15,7 @@ import model.Part;
 import model.Product;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 // TODO validate input
@@ -92,8 +91,22 @@ public class AddProduct implements Initializable {
     }
 
     public void onRemoveAssociatedPartButton(ActionEvent actionEvent) {
-        temp.deleteAssociatedPart(selectedAssociatedPart);
-        associatedPartsTableView.setItems(temp.getAllAssociatedParts());
+        if (selectedAssociatedPart != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setContentText("Please confirm deletion of " + selectedAssociatedPart.getName() + ".");
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if(!result.isPresent()) {
+                selectedAssociatedPart = null;
+            }
+            else if(result.get() == ButtonType.OK) {
+                temp.deleteAssociatedPart(selectedAssociatedPart);
+                associatedPartsTableView.setItems(temp.getAllAssociatedParts());
+                selectedAssociatedPart = null;
+            }
+            else if(result.get() == ButtonType.CANCEL) {
+                selectedAssociatedPart = null;
+            }
+        }
     }
 
     /*

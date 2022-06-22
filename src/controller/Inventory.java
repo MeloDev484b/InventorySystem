@@ -21,6 +21,7 @@ import model.Outsourced;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 /*
 The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
@@ -42,6 +43,7 @@ public class Inventory implements Initializable {
     // set stage for delete warning
     Stage confirmDeleteStage = new Stage();
     Scene confirmDeleteScene;
+
     // fxml objects
     public CheckBox idSearchCheckBox;
     public Button exitButton;
@@ -55,8 +57,6 @@ public class Inventory implements Initializable {
 
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
-
-    public static boolean delete = false;
     public static Part selectedPart = null;
     public static Product selectedProduct = null;
     public static int partId = 1000;
@@ -312,6 +312,7 @@ public class Inventory implements Initializable {
     Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
     */
     public void setSelectedPart() {
+        selectedProduct = null;
         selectedPart = getPart(getIndex((Part) partsTableView.getSelectionModel().getSelectedItem()));
     }
 
@@ -319,6 +320,7 @@ public class Inventory implements Initializable {
     Sets selectedProduct to the Product that the user clicks in the PartsTableView.
     */
     public void setSelectedProduct() {
+        selectedPart = null;
         selectedProduct = getProduct(getIndex((Product) productsTableView.getSelectionModel().getSelectedItem()));
     }
 
@@ -379,16 +381,20 @@ public class Inventory implements Initializable {
     /*
     Calls deletePart() on the selectedPart when the user clicks the deletePartButton, then resets PartsTableView.
     */
-    public void onDeletePartButton(ActionEvent actionEvent) throws IOException {
-        System.out.println("Delete part button pressed");
-        FXMLLoader loadDeleteWarning = new FXMLLoader(getClass().getResource("/view/ConfirmDelete.fxml"));
-        Parent root = loadDeleteWarning.load();
-        confirmDeleteScene = new Scene(root);
-        confirmDeleteStage.setScene(confirmDeleteScene);
-        confirmDeleteStage.show();
-        if (delete) {
-            deletePart(selectedPart);
-            partsTableView.setItems(allParts);
+    public void onDeletePartButton(ActionEvent actionEvent) {
+        if (selectedPart != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setContentText("Please confirm deletion of " + selectedPart.getName() + ".");
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if(!result.isPresent()) {
+                selectedPart = null;
+            }
+            else if(result.get() == ButtonType.OK) {
+                deletePart(selectedPart);
+            }
+            else if(result.get() == ButtonType.CANCEL) {
+                selectedPart = null;
+            }
         }
     }
 
@@ -396,8 +402,20 @@ public class Inventory implements Initializable {
     Calls deleteProduct() on the selectedProduct when the user clicks the deleteProductButton.
     */
     public void onDeleteProductButton(ActionEvent actionEvent) {
-        System.out.println("Delete product button pressed");
-        deleteProduct(selectedProduct);
+        if (selectedProduct != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setContentText("Please confirm deletion of " + selectedProduct.getName() + ".");
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if(!result.isPresent()) {
+                selectedProduct = null;
+            }
+            else if(result.get() == ButtonType.OK) {
+                deleteProduct(selectedProduct);
+            }
+            else if(result.get() == ButtonType.CANCEL) {
+                selectedProduct = null;
+            }
+        }
     }
 
     /*

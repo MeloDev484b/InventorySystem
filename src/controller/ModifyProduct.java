@@ -3,11 +3,11 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,7 +16,9 @@ import javafx.stage.Stage;
 import model.Part;
 import model.Product;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 // TODO validate input
@@ -25,6 +27,8 @@ import java.util.ResourceBundle;
 The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
 public class ModifyProduct implements Initializable {
+    Stage confirmRemovalStage = new Stage();
+    Scene confirmRemovalScene;
     public TextField idField, nameField, invField, priceCostField, maxField, minField;
     public TableView inventoryPartsTableView;
     public TableView<Part> associatedPartsTableView;
@@ -37,11 +41,9 @@ public class ModifyProduct implements Initializable {
     private Part selectedPart = null;
     private Part selectedAssociatedPart = null;
     private Product temp;
-
     private int savedIndex;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Add product active");
         savedIndex = Inventory.getIndex(Inventory.selectedProduct);
         temp = Inventory.selectedProduct;
         productIntake();
@@ -107,8 +109,22 @@ Uses Stage.close() to close the AddProduct window.
     }
 
     public void onRemoveAssociatedPartButton(ActionEvent actionEvent) {
-        temp.deleteAssociatedPart(selectedAssociatedPart);
-        associatedPartsTableView.setItems(temp.getAllAssociatedParts());
+        if (selectedAssociatedPart != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setContentText("Please confirm deletion of " + selectedAssociatedPart.getName() + ".");
+            Optional<ButtonType> result = confirmation.showAndWait();
+            if(!result.isPresent()) {
+                selectedAssociatedPart = null;
+            }
+            else if(result.get() == ButtonType.OK) {
+                temp.deleteAssociatedPart(selectedAssociatedPart);
+                associatedPartsTableView.setItems(temp.getAllAssociatedParts());
+                selectedAssociatedPart = null;
+            }
+            else if(result.get() == ButtonType.CANCEL) {
+                selectedAssociatedPart = null;
+            }
+        }
     }
 
     /*
@@ -139,7 +155,6 @@ Uses Stage.close() to close the AddProduct window.
 
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
-        System.out.println("Selected item is " + selectedPart.getName());
     }
 
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {

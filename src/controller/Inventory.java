@@ -24,46 +24,57 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import static java.lang.Character.isAlphabetic;
 
-/**
-The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
+/** The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
 Objects in allParts and allProducts can be added, deleted, and modified by the user.
 */
 public class Inventory implements Initializable {
-    // set stage for add parts
-    Stage addPartStage = new Stage();
-    Scene addPartScene;
-    // set stage for modify parts
-    Stage modifyPartStage = new Stage();
-    Scene modifyPartScene;
-    // set stage for add products
-    Stage addProductStage = new Stage();
-    Scene addProductScene;
-    // set stage for modify products
-    Stage modifyProductStage = new Stage();
-    Scene modifyProductScene;
-    // set stage for delete warning
-    Stage confirmDeleteStage = new Stage();
-    Scene confirmDeleteScene;
-
-    // fxml objects
-    public CheckBox idSearchCheckBox;
+    /** Prepare Stages for later use.
+     */
+    Stage addPartStage, modifyPartStage, modifyProductStage, addProductStage = new Stage();
+    /** Prepare Scenes for later use.
+     */
+    Scene addPartScene, modifyPartScene, modifyProductScene, addProductScene;
+    /** Exit button.
+     */
     public Button exitButton;
-    public AnchorPane partsAnchorPane;
+    /** TableViews for parts and products.
+     */
     public TableView partsTableView, productsTableView;
+    /** TableColumns for Parts.
+     */
     public TableColumn partIdColumn, partNameColumn, partInventoryLevelColumn, partPricePerUnitColumn;
+    /** Add, delete, and modify buttons for parts.
+     */
     public Button addPartButton, deletePartButton, modifyPartButton;
+    /** Search TextFields.
+     */
     public TextField searchPartsTextField, searchProductsTextField;
+    /** TableColumns for Products.
+     */
     public TableColumn productIdColumn, productNameColumn, productInventoryLevelColumn, productPricePerUnitColumn;
+    /** Add, delete, and modify buttons for Products.
+     */
     public Button addProductButton, deleteProductButton, modifyProductButton;
+    /** ObservableList to hold all Parts in inventory.
+     */
     private static ObservableList <Part> allParts = FXCollections.observableArrayList();
+    /** ObservableList to hold all Products in inventory.
+     */
     private static ObservableList <Product> allProducts = FXCollections.observableArrayList();
+    /** Temporary storage for a selected Part.
+     */
     public static Part selectedPart = null;
+    /** Temporary storage for a selected Product.
+     */
     public static Product selectedProduct = null;
+    /** Static variable to hold the current Part ID number.
+     */
     public static int partId = 1000;
+    /** Static variable to hold the current Product ID number.
+     */
     public static int productId = 1000;
 
-    /**
-    Initializes allParts and allProducts and sets the respective TableView to display the objects they contain.
+    /** Initializes allParts and allProducts and sets the respective TableView to display the objects they contain.
     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -99,23 +110,23 @@ public class Inventory implements Initializable {
     }
 
     // UML-specified methods
-    /**
-    Uses ObservableList.add() to add a Part object to allParts.
+    /** Uses ObservableList.add() to add a Part object to allParts.
+     @param newPart Part to be added to allParts.
     */
     public static void addPart(Part newPart) {
         allParts.add(newPart);
     }
 
-    /**
-    Uses ObservableList.add() to add a Product object to allProducts.
+    /** Uses ObservableList.add() to add a Product object to allProducts.
+     @param newProduct Part to be added to allProducts.
     */
     public static void addProduct(Product newProduct) {
         allProducts.add(newProduct);
     }
 
-    /**
-    Returns a Part contained in allParts that matches the supplied partId integer argument. If no part is matched,
+    /** Returns a Part contained in allParts that matches the supplied partId integer argument. If no part is matched,
     the user is shown a warning that the part was not found and returns null.
+     @return Part if a part is found, null if a match is not found.
     */
     public static Part lookupPart(int partId) {
         ObservableList <Part> foundParts = getAllParts();
@@ -130,9 +141,9 @@ public class Inventory implements Initializable {
         return null;
     }
 
-    /**
-    Returns a Product contained in allProducts that matches the supplied productId integer argument. If no
+    /** Returns a Product contained in allProducts that matches the supplied productId integer argument. If no
     product is matched, the user is shown a warning that the product was not found and returns null.
+     @return Product if a product is found, null if no match is found.
     */
     public Product lookupProduct(int productId) {
         ObservableList <Product> foundProducts = getAllProducts();
@@ -147,10 +158,10 @@ public class Inventory implements Initializable {
         return null;
     }
 
-    /**
-    Checks allParts for a partName that matches the Part.getName() and adds it to the partsByName list.
+    /** Checks allParts for a partName that matches the Part.getName() and adds it to the partsByName list.
     If no Parts match, the original allParts list is returned and the user is notified that the searched part
     does not exist.
+     @return ObservableList of Parts, or allParts if no matches are found.
     */
     public static ObservableList<Part> lookupPart(String partName) {
         ObservableList<Part> partsByName = FXCollections.observableArrayList();
@@ -170,10 +181,10 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Checks allProducts for a ProductName that matches the Product.getName() and adds it to the ProductsByName list.
+    /** Checks allProducts for a ProductName that matches the Product.getName() and adds it to the ProductsByName list.
     If no Products match, the original allProducts list is returned and the user is notified that the searched Product
     does not exist.
+     @return ObservableList of Products, or allProducts if no matches are found.
     */
     public ObservableList<Product> lookupProduct(String productName) {
         ObservableList<Product> productsByName = FXCollections.observableArrayList();
@@ -193,52 +204,57 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Uses ObservableList.set() to replace a Part in allParts, at the specified index.
+    /** Uses ObservableList.set() to replace a Part in allParts, at the specified index.
+     @param index Index of the Part to be replaced.
+     @param updatedPart Part to be saved over the old Part.
     */
     public static void updatePart(int index, Part updatedPart) {
         allParts.set(index, updatedPart);
     }
 
-    /**
-    Uses ObservableList.set() to replace a Product in allProducts, at the specified index.
+    /** Uses ObservableList.set() to replace a Product in allProducts, at the specified index.
+     @param index Index of the Product to be replaced
+     @param updatedProduct Product to be saved over the old Product.
     */
     public static void updateProduct(int index, Product updatedProduct) {
         allProducts.set(index, updatedProduct);
     }
 
-    /**
-    Uses ObservableList.remove() to delete a Part in allParts. Returns true if the Part is deleted.
-    */
+    /** Uses ObservableList.remove() to delete a Part in allParts. Returns true if the Part is deleted.
+     @param deleteMe The part to be deleted.
+     @return allParts as an ObservableList.
+     */
     public static boolean deletePart(Part deleteMe) {
         return allParts.remove(deleteMe);
     }
 
-    /**
-    Uses ObservableList.remove() to delete a Product in allProducts. Returns true if the Product is deleted.
+    /** Uses ObservableList.remove() to delete a Product in allProducts. Returns true if the Product is deleted.
+     @param deleteMe The product to be deleted.
+     @return allProducts as an ObservableList.
     */
     public static boolean deleteProduct(Product deleteMe) {
         return allProducts.remove(deleteMe);
     }
 
-    /**
-    Getter that returns the ObservableList allParts.
+    /** Getter that returns the ObservableList allParts.
+     @return allParts as an ObservableList.
     */
     public static ObservableList getAllParts() {
         return allParts;
     }
 
-    /**
-    Getter that returns the ObservableList allProducts.
+    /** Getter that returns the ObservableList allProducts.
+     @return allProducts as an ObservableList.
     */
     public ObservableList getAllProducts() {
         return allProducts;
     }
 
     // Helper methods
-    /**
-    Checks allParts for a partId that matches the Part.getId() and adds it to the partsById list.
+    /** Checks allParts for a partId that matches the Part.getId() and adds it to the partsById list.
     If no Parts match, the original allParts list is returned.
+     @param partToId The part to be searched by its ID.
+     @return allParts as an ObservableList if it is not found, partById as an ObservableList if it is found.
     */
     public static ObservableList<Part> partById(Part partToId) {
         if (partToId != null) {
@@ -260,9 +276,10 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Checks allProducts for a productId that matches the Product.getId() and adds it to the productsById list.
+    /** Checks allProducts for a productId that matches the Product.getId() and adds it to the productsById list.
     If no Products match, the original allProducts list is returned.
+     @param productToId The part to be searched by its ID.
+     @return allProducts as an ObservableList if it is not found, productById as an ObservableList if it is found.
     */
     public ObservableList<Product> productById(Product productToId) {
         if (productToId != null) {
@@ -284,9 +301,9 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    When supplied int value of 0, partId is incremented and returned. When supplied any other int value
-    productId is incremented and returned.
+    /** Increments partId or productId based on the argument supplied.
+     @param selection 0 to increment partId, any other int to increment productId.
+
     */
     public static int incrementId(int selection) {
         if (selection == 0) {
@@ -297,32 +314,35 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Uses ObservableList.indexOf() to return an integer index of the specified Part.
+    /** Uses ObservableList.indexOf() to return an integer index of the specified Part.
+     @param part The Part to get the index of.
+     @return The index of part as an int.
     */
     public static int getIndex(Part part) {
         return allParts.indexOf(part);
     }
 
-    /**
-    Uses ObservableList.indexOf() to return an integer index of the specified Product.
+    /** Uses ObservableList.indexOf() to return an integer index of the specified Product.
+     @param product The Product to get the index of.
+     @return The index of product as an int.
     */
     public static int getIndex (Product product) {return allProducts.indexOf(product);}
 
-    /**
-    Uses ObservableList.get() to return a Part at the specified index.
+    /** Uses ObservableList.get() to return a Part at the specified index.
+     @param index The desired index as an int.
+     @return Part at the specified index.
     */
     public static Part getPart(int index) {
         return allParts.get(index);
     }
 
-    /**
-    Uses ObservableList.get() to return a Product at the specified index.
+    /** Uses ObservableList.get() to return a Product at the specified index.
+     @param index The desired index as an int.
+     @return Product at the specified index.
     */
     public static Product getProduct(int index) {return allProducts.get(index);}
 
-    /**
-    Sets selectedProduct to null to ensure the user does not unintentionally delete or modify a product when they
+    /** Sets selectedProduct to null to ensure the user does not unintentionally delete or modify a product when they
     return to the ProductsTableView.
     Sets selectedPart to the Part in allParts that matches the part that the user clicks in the PartsTableView.
     */
@@ -331,8 +351,7 @@ public class Inventory implements Initializable {
         selectedPart = getPart(getIndex((Part) partsTableView.getSelectionModel().getSelectedItem()));
     }
 
-    /**
-    Sets selectedPart to null to ensure the user does not unintentionally delete or modify a part when they
+    /** Sets selectedPart to null to ensure the user does not unintentionally delete or modify a part when they
     return to the PartsTableView.
     Sets selectedProduct to the Product that the user clicks in the ProductsTableView.
     */
@@ -341,8 +360,7 @@ public class Inventory implements Initializable {
         selectedProduct = getProduct(getIndex((Product) productsTableView.getSelectionModel().getSelectedItem()));
     }
 
-    /**
-     Checks for a NumberFormatException to determine if the String argument is an integer.
+    /** Checks for a NumberFormatException to determine if the String argument is an integer.
      Returns true if an int can be parsed from the String argument.
      Returns false if the argument is null, or if a NumberFormatException occurs.
 
@@ -351,6 +369,9 @@ public class Inventory implements Initializable {
     When the Strings did not contain the correct type of data, I would run into a NumberFormatException.
     I created methods to catch these exceptions and return false to indicate the String did not contain
     an integer.
+
+     @param checkMe The String to be checked.
+     @return true if checkMe is an int, false if not.
     */
     public static boolean intCheck(String checkMe) {
         if (checkMe == null) {
@@ -365,8 +386,7 @@ public class Inventory implements Initializable {
         return true;
     }
 
-    /**
-     Checks for a NumberFormatException to determine if the String argument is a double.
+    /** Checks for a NumberFormatException to determine if the String argument is a double.
      Returns true if a double can be parsed from the String argument. Returns false if the argument is null,
      or if a NumberFormatException occurs.
 
@@ -375,6 +395,8 @@ public class Inventory implements Initializable {
     When the Strings did not contain the correct type of data, I would run into a NumberFormatException.
     I created methods to catch these exceptions and return false to indicate the String did not contain
     a double.
+     @param checkMe The String to be checked.
+     @return true if checkMe is a double, false if not.
     */
     public static boolean doubleCheck(String checkMe) {
         if (checkMe == null) {
@@ -389,10 +411,11 @@ public class Inventory implements Initializable {
         return true;
     }
 
-    /**
-    Runs isAlphabetic against the first character to determine if the String argument begins with an alphabetic
+    /** Runs isAlphabetic against the first character to determine if the String argument begins with an alphabetic
     character. Returns true if the String argument begins with an alphabetic character, returns false if the
     argument is null, an empty string, or begins with a non-alphabetic character.
+     @param checkMe The String to be checked.
+     @return true if checkMe begins with an alphabetic character, false if not.
     */
     public static boolean stringCheck(String checkMe) {
         if (checkMe == null || checkMe == "") {
@@ -406,8 +429,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Generates an information alert with text that depends on whether the user has selected a Part or a Product.
+    /** Generates an information alert with text that depends on whether the user has selected a Part or a Product.
     */
     private void showInfoMessage() {
         Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -420,8 +442,8 @@ public class Inventory implements Initializable {
         info.show();
     }
 
-    /**
-    Generates warning alert with text that depends on the supplied integer argument.
+    /** Generates warning alert with text that depends on the supplied integer argument.
+     @param warningType 0 for the Part deletion warning, any other int for Product deletion warning.
     */
     private void selectBeforeDeleteWarning(int warningType) {
         Alert deleteWarning = new Alert(Alert.AlertType.WARNING);
@@ -435,8 +457,7 @@ public class Inventory implements Initializable {
     }
 
     // fxml methods
-    /**
-    Calls setSelectedPart() when the user clicks on the PartsTableView, and it is not empty.
+    /** Calls setSelectedPart() when the user clicks on the PartsTableView, and it is not empty.
     */
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
         if (!partsTableView.getSelectionModel().isEmpty()) {
@@ -444,8 +465,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Calls setSelectedProduct() when the user clicks on the ProductsTableView, and it is not empty.
+    /** Calls setSelectedProduct() when the user clicks on the ProductsTableView, and it is not empty.
     */
     public void onProductsTableViewClick(MouseEvent mouseEvent) {
         if (!productsTableView.getSelectionModel().isEmpty()) {
@@ -453,8 +473,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Loads and displays the AddPart GUI.
+    /** Loads and displays the AddPart GUI.
     */
     public void onAddPartButton(ActionEvent event) throws IOException {
         System.out.println("Add part button pressed");
@@ -465,8 +484,7 @@ public class Inventory implements Initializable {
         addPartStage.show();
     }
 
-    /**
-    Loads and displays the AddProduct GUI.
+    /** Loads and displays the AddProduct GUI.
     */
     public void onAddProductButton(ActionEvent event) throws IOException{
         FXMLLoader loadAddProduct = new FXMLLoader(getClass().getResource("/view/AddProduct.fxml"));
@@ -476,8 +494,7 @@ public class Inventory implements Initializable {
         modifyProductStage.show();
     }
 
-    /**
-    If selectedPart is not null an alert is displayed to the user. If the user clicks OK,
+    /** If selectedPart is not null an alert is displayed to the user. If the user clicks OK,
     deletePart() is called on the selectedPart, and selectedPart is set to null so it no longer
     stores a copy of the clicked part.
     If the user clicks CANCEL or closes the window, an info panel is displayed to the user to inform them
@@ -507,8 +524,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    If selectedProduct is not null an alert is displayed to the user. If the user clicks OK,
+    /** If selectedProduct is not null an alert is displayed to the user. If the user clicks OK,
     deleteProduct() is called on the selectedProduct, and selectedProduct is set to null so it no longer
     stores a copy of the clicked Product.
     If the user clicks CANCEL or closes the window, an info panel is displayed to the user to inform them
@@ -547,8 +563,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Checks to see if the user has selected a part, then loads and displays the ModifyPart GUI if they have.
+    /** Checks to see if the user has selected a part, then loads and displays the ModifyPart GUI if they have.
     If the user has not selected a part, they are warned to select a part before attempting to modify it.
     */
     public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
@@ -566,8 +581,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Checks to see if the user has selected a Product, then loads and displays the ModifyProduct GUI if they have.
+    /** Checks to see if the user has selected a Product, then loads and displays the ModifyProduct GUI if they have.
     If the user has not selected a product, they are warned to select a product before attempting to modify it.
     */
     public void onModifyProductButton(ActionEvent actionEvent) throws IOException {
@@ -586,15 +600,13 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    Calls System.exit() to exit the application
+    /** Calls System.exit() to exit the application
     */
     public void onExitButton(ActionEvent actionEvent) {
         System.exit(0);
     }
 
-    /**
-    When the user presses enter after typing in the searchPartsTextField, or the searchPartsTextField is left empty
+    /** When the user presses enter after typing in the searchPartsTextField, or the searchPartsTextField is left empty
     the contents of the TextField are checked to determine if they are an integer or not. If the contents are an
     integer, the partsTableView is set to the results of partById search. If the contents are not an integer, the
     partsTableView is set to the results of a part name search.
@@ -611,8 +623,7 @@ public class Inventory implements Initializable {
         }
     }
 
-    /**
-    When the user presses enter after typing in the searchProductsTextField, or the searchProductsTextField
+    /** When the user presses enter after typing in the searchProductsTextField, or the searchProductsTextField
     is left empty, the contents of the TextField are checked to determine if they are an integer or not.
     If the contents are an integer, the productsTableView is set to the results of productById search.
     If the contents are not an integer, the productsTableView is set to the results of a product name search.

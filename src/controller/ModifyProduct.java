@@ -24,30 +24,55 @@ import java.util.ResourceBundle;
 /** The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
 public class ModifyProduct implements Initializable {
-    Stage confirmRemovalStage = new Stage();
-    Scene confirmRemovalScene;
+    /** TextFields for Product data.
+     */
     public TextField idField, nameField, invField, priceCostField, maxField, minField;
+    /** TableView to be loaded with data from Inventory.allProducts.
+     */
     public TableView inventoryPartsTableView;
+    /** TableView to be loaded with data from temp.associatedProducts.
+     */
     public TableView<Part> associatedPartsTableView;
+    /** Add, remove, save and cancel buttons.
+     */
     public Button addAssociatedPartButton, removeAssociatedPartButton, saveProductButton, cancelButton;
+    /** TextField to support searching.
+     */
     public TextField inventoryPartsSearchTextField;
-    // Inventory Part columns
+    /** Inventory Part columns
+     */
     public TableColumn partIdColumn, partNameColumn, inventoryLevelColumn, pricePerUnitColumn;
-    // Associated Part columns
+    /** Associated Part columns
+     */
     public TableColumn aPartIdColumn, aPartNameColumn, aInventoryLevelColumn, aPricePerUnitColumn;
+    /** Temporary storage for Product name.
+     */
     private String name;
+    /** Temporary storage for Product price.
+     */
     private double price;
+    /** Temporary storage for Product inventory level.
+     */
     private int stock;
+    /** Temporary storage for Product minimum stock.
+     */
     private int min;
+    /** Temporary storage for Product maximum stock.
+     */
     private int max;
+    /** Temporary storage for the selected Part.
+     */
     private Part selectedPart = null;
+    /** Temporary storage for the selected associated Part.
+     */
     private Part selectedAssociatedPart = null;
+    /** Temporary storage for the Product to be modified.
+     */
     private Product temp;
+    /** Temporary storage for the index to which the Product will be saved.
+     */
     private int savedIndex;
-    /** Initializes ModifyProduct by saving the index of the selectedProduct, saves the selectedProduct in a temp
-    Product variable (to ensure the original product is not edited before confirmation), productIntake() is called
-    to process the selectedProduct data, and the TableViews are set to the appropriate data and their columns are
-    initialized.
+    /** Initializes ModifyProduct.
     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,8 +95,7 @@ public class ModifyProduct implements Initializable {
         aPricePerUnitColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    /**
-    Ensures the temp Product has been initialized and if it has, ModifyProduct's TextFields are set to the values
+    /** Ensures the temp Product has been initialized and if it has, ModifyProduct's TextFields are set to the values
     that the temp Product holds.
     */
     public void productIntake() {
@@ -85,8 +109,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    If the TableView that is generated from Inventory's allParts list is not null, the selectedPart is set to
+    /** If the TableView that is generated from Inventory's allParts list is not null, the selectedPart is set to
     the selected item in the inventoryPartsTableView.
     */
     public void setSelectedPart() throws NullPointerException {
@@ -95,8 +118,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    If the TableView that is generated from temp's associatedParts list is not null, the selectedAssociatedPart
+    /** If the TableView that is generated from temp's associatedParts list is not null, the selectedAssociatedPart
     is set to the selected item in the associatedPartsTableView.
     */
     public void setSelectedAssociatedPart() throws NullPointerException {
@@ -105,17 +127,15 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    Uses Stage.close() to close the AddProduct window.
+    /** Uses Stage.close() to close the AddProduct window.
     */
     private void closeWindow() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    /**
-    Returns true if all fields pass validation, or false if any of the fields fail validation.
-    If the field data passes validation it is saved to the class variables that temporarily hold part field data.
+    /** Performs validation checks on relevant fields.
+     @return true if fields are validated, false if they are not.
     */
     public boolean validateFields() {
         if (Inventory.stringCheck(nameField.getText())) {
@@ -164,15 +184,13 @@ public class ModifyProduct implements Initializable {
         return true;
     }
 
-    /**
-    Calls closeWindow() when the user clicks the cancel button.
+    /** Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /**
-    Checks to ensure the user has selected a part from the inventoryPartsTableView and, if they have,
+    /** Checks to ensure the user has selected a part from the inventoryPartsTableView and, if they have,
     it is added to temp's associatedParts list. The associatedPartsTableView is then reset to the current
     associatedParts list.
     If the user has not selected a part, they are warned that they must select a part before attempting to add it
@@ -190,8 +208,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    Checks to ensure the user has selected a part from the associatedPartsTableView and, if they have,
+    /** Checks to ensure the user has selected a part from the associatedPartsTableView and, if they have,
     the user is prompted to confirm the removal from temp's associatedParts list.
     If the user confirms removal, the part is removed from the associatedParts list and associatedPartsTableView
     is then reset to the current associatedParts list.
@@ -222,8 +239,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create a Product.
+    /** Retrieves text from TextFields and temporarily stores it in variables. These variables are used to create a Product.
     After the Product is added to allProducts, Inventory.productId is incremented and the window is closed.
     */
     public void onSaveProductButton(ActionEvent actionEvent) {
@@ -238,8 +254,7 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    If the user presses the Enter key or the TextField is left empty, an appropriate search is performed on the
+    /** If the user presses the Enter key or the TextField is left empty, an appropriate search is performed on the
     contents of the TextField. The contents are first checked if it contains an integer. If the contents of the
     field is an integer, the inventory parts are searched for a matching ID. If the contents are a String,
     the inventory is searched for a matching name.
@@ -256,15 +271,13 @@ public class ModifyProduct implements Initializable {
         }
     }
 
-    /**
-    Calls setSelectedPart() when the user clicks on the inventoryPartsTableView.
+    /** Calls setSelectedPart() when the user clicks on the inventoryPartsTableView.
      */
     public void onInventoryPartsTableViewClicked(MouseEvent mouseEvent) {
         setSelectedPart();
     }
 
-    /**
-    Calls setSelectedAssociatedPart when the user clicks on the associatedPartTableView.
+    /** Calls setSelectedAssociatedPart when the user clicks on the associatedPartTableView.
      */
     public void onAssociatedPartTableViewClicked(MouseEvent mouseEvent) {
         setSelectedAssociatedPart();

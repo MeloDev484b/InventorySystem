@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 /** The Main class is used to load and display the Inventory GUI.
 
+ Javadocs are located in the javadoc folder at /QKM2_InventorySystem/javadocs
+
 "FUTURE ENHANCEMENT"
 If this application were to be updated, a future enhancement that could extend the functionality of the application
 would be the ability to save data to a database or local hard drive.

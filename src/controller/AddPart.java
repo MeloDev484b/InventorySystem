@@ -12,41 +12,62 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import static java.lang.Character.isAlphabetic;
 
-/**
-The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
+/** The AddPart class is used to build InHouse and Outsourced objects and add them to allParts in the Inventory class.
 */
 public class AddPart implements Initializable {
+    /** Radio button to specify an InHouse Part.
+     */
     public RadioButton inHouseRadio;
+    /** Radio button to specify an Outsourced Part.
+     */
     public RadioButton outsourcedRadio;
+    /** TextFields for Part data.
+     */
     public TextField idField, nameField, invField, priceCostField, maxField, minField, seventhArgField;
+    /** The save and cancel buttons.
+     */
     public Button saveButton, cancelButton;
+    /** Label that is changed to reflect whether the inHouseRadio or the outsourcedRadio has been selected.
+     */
     public Label seventhArgLabel;
+    /** Temporary storage for the Part name.
+     */
     private String name;
+    /** Temporary storage for the Part price.
+     */
     private double price;
+    /** Temporary storage for the Part stock.
+     */
     private int stock;
+    /** Temporary storage for the Part minimum stock.
+     */
     private int min;
+    /** Temporary storage for the Part maximum stock.
+     */
     private int max;
+    /** Temporary storage for the Part machine ID.
+     */
     private int machineId;
+    /** Temporary storage for the Part manufacturer's company name.
+     */
     private String companyName;
 
-    /**
-    On initialization, the inHouseRadio is set to selected.
+    /** On initialization, the inHouseRadio is set to selected.
     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         inHouseRadio.setSelected(true);
     }
 
-    /**
-    Uses Stage.close() to close the AddPart window.
+    /** Uses Stage.close() to close the AddPart window.
     */
     private void closeWindow() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    /**
-    Generates an Alert, and sets the text based on the field code entered.
+    /** Generates an Alert, and sets the text based on the field code entered.
+     @param warningNumber int that correlates with the desired message.
     */
     public static void warnUserValidation(int warningNumber) {
         Alert warning = new Alert(Alert.AlertType.WARNING);
@@ -81,10 +102,9 @@ public class AddPart implements Initializable {
         warning.show();
     }
 
-    /**
-    Returns true if all fields pass validation, or false if any of the fields fail validation.
-    If the field data passes validation it is saved to the class variables that temporarily hold part field data.
-    */
+    /** Saves validated data from the respective TextFields.
+     @return true if all fields are validated, false if any are not.
+     */
     public boolean validateFields() {
         if (Inventory.stringCheck(nameField.getText())) {
             name = nameField.getText();
@@ -151,8 +171,7 @@ public class AddPart implements Initializable {
     }
 
 
-    /**
-    Checks if the inHouseRadio is selected and then uses class part data variables to create an appropriate part.
+    /** Checks if the inHouseRadio is selected and then uses class part data variables to create an appropriate part.
     After the Part is added to allParts, Inventory.partId is incremented and the window is closed.
     */
     public void onSaveButton(ActionEvent actionEvent) {
@@ -170,15 +189,13 @@ public class AddPart implements Initializable {
         }
     }
 
-    /**
-    Calls closeWindow() when the user clicks the cancel button.
+    /** Calls closeWindow() when the user clicks the cancel button.
     */
     public void onCancelButton(ActionEvent actionEvent) {
         closeWindow();
     }
 
-    /**
-    Checks if the inHouseRadio is selected and appropriately sets the label text.
+    /** Checks if the inHouseRadio is selected and appropriately sets the label text.
     */
     public void onRadioSelect(ActionEvent actionEvent) {
         if (inHouseRadio.isSelected()) {

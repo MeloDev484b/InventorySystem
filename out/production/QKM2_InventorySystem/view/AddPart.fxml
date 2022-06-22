@@ -60,8 +60,8 @@
             </AnchorPane>
             <AnchorPane layoutX="10.0" layoutY="67.0" prefHeight="25.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="inOutLabel" layoutX="18.0" layoutY="4.0" text="Machine ID" />
-                  <TextField fx:id="machineIdField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
+                  <Label fx:id="seventhArgLabel" layoutX="18.0" layoutY="4.0" text="Machine ID" />
+                  <TextField fx:id="seventhArgField" layoutX="90.0" layoutY="1.0" scaleX="0.75" />
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" />

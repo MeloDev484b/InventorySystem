@@ -18,8 +18,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-// TODO validate input
-
 /*
 The AddProduct class is used to build Product objects and add them to allProducts in the Inventory class.
 */
@@ -33,6 +31,11 @@ public class AddProduct implements Initializable {
     public TableColumn partIdColumn, partNameColumn, inventoryLevelColumn, pricePerUnitColumn;
     // Associated Part columns
     public TableColumn aPartIdColumn, aPartNameColumn, aInventoryLevelColumn, aPricePerUnitColumn;
+    private String name;
+    private double price;
+    private int stock;
+    private int min;
+    private int max;
     private Part selectedPart = null;
     private Part selectedAssociatedPart = null;
     private Product temp;
@@ -83,17 +86,69 @@ public class AddProduct implements Initializable {
         stage.close();
     }
 
+    public boolean validateFields() {
+        if (Inventory.stringCheck(nameField.getText())) {
+            name = nameField.getText();
+        }
+        else {
+            AddPart.warnUserValidation(0);
+            return false;
+        }
+        if (Inventory.doubleCheck(priceCostField.getText())) {
+            price = Double.parseDouble(priceCostField.getText());
+        }
+        else {
+            AddPart.warnUserValidation(1);
+            return false;
+        }
+        if (Inventory.intCheck(invField.getText())) {
+            stock = Integer.parseInt(invField.getText());
+        }
+        else {
+            AddPart.warnUserValidation(2);
+            return false;
+        }
+        if (Inventory.intCheck(minField.getText())) {
+            min = Integer.parseInt(minField.getText());
+        }
+        else {
+            AddPart.warnUserValidation(3);
+            return false;
+        }
+        if (Inventory.intCheck(maxField.getText())) {
+            max = Integer.parseInt(maxField.getText());
+        }
+        else {
+            AddPart.warnUserValidation(4);
+            return false;
+        }
+        if (min > max) {
+            AddPart.warnUserValidation(4);
+            return false;
+        }
+        if (stock > max || stock < min) {
+            AddPart.warnUserValidation(2);
+            return false;
+        }
+        return true;
+    }
+
     public void onAddAssociatedPartButton(ActionEvent actionEvent) {
         if (selectedPart != null) {
             temp.addAssociatedPart(selectedPart);
             associatedPartsTableView.setItems(temp.getAllAssociatedParts());
+        }
+        else {
+            Alert addPartWarning = new Alert(Alert.AlertType.WARNING);
+            addPartWarning.setContentText("Please select an part to add.");
+            addPartWarning.show();
         }
     }
 
     public void onRemoveAssociatedPartButton(ActionEvent actionEvent) {
         if (selectedAssociatedPart != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setContentText("Please confirm deletion of " + selectedAssociatedPart.getName() + ".");
+            confirmation.setContentText("Please confirm removal of " + selectedAssociatedPart.getName() + ".");
             Optional<ButtonType> result = confirmation.showAndWait();
             if(!result.isPresent()) {
                 selectedAssociatedPart = null;
@@ -107,6 +162,11 @@ public class AddProduct implements Initializable {
                 selectedAssociatedPart = null;
             }
         }
+        else {
+            Alert deleteAssociatedPartWarning = new Alert(Alert.AlertType.WARNING);
+            deleteAssociatedPartWarning.setContentText("Please select an associated part to remove.");
+            deleteAssociatedPartWarning.show();
+        }
     }
 
     /*
@@ -114,19 +174,21 @@ public class AddProduct implements Initializable {
     After the Product is added to allProducts, Inventory.productId is incremented and the window is closed.
     */
     public void onSaveProductButton(ActionEvent actionEvent) {
-        temp.setId(Inventory.productId);
-        temp.setName(nameField.getText());
-        temp.setPrice(Double.parseDouble(priceCostField.getText()));
-        temp.setStock(Integer.parseInt(invField.getText()));
-        temp.setMin(Integer.parseInt(minField.getText()));
-        temp.setMax(Integer.parseInt(maxField.getText()));
-        Inventory.addProduct(temp);
-        Inventory.incrementId(1);
-        closeWindow();
+        if (validateFields()) {
+            temp.setId(Inventory.productId);
+            temp.setName(nameField.getText());
+            temp.setPrice(Double.parseDouble(priceCostField.getText()));
+            temp.setStock(Integer.parseInt(invField.getText()));
+            temp.setMin(Integer.parseInt(minField.getText()));
+            temp.setMax(Integer.parseInt(maxField.getText()));
+            Inventory.addProduct(temp);
+            Inventory.incrementId(1);
+            closeWindow();
+        }
     }
 
     public void onInventoryPartsSearchTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
+        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || inventoryPartsSearchTextField.getText() == "") {
             if (Inventory.intCheck(inventoryPartsSearchTextField.getText())) {
                 int partInt = Integer.parseInt(inventoryPartsSearchTextField.getText());
                 inventoryPartsTableView.setItems(Inventory.partById(Inventory.lookupPart(partInt)));

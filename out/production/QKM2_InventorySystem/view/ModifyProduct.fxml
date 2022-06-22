@@ -99,7 +99,7 @@
                                 <Button fx:id="cancelButton" layoutX="92.0" layoutY="40.0" mnemonicParsing="false" onAction="#onCancelButton" text="Cancel" />
                             </children>
                         </Group>
-                        <TextField fx:id="inventoryPartsSearchTextField" layoutX="217.0" layoutY="28.0" onKeyPressed="#onInventoryPartsSearchTextField" />
+                        <TextField fx:id="inventoryPartsSearchTextField" layoutX="217.0" layoutY="28.0" onKeyPressed="#onInventoryPartsSearchTextField" promptText="Search parts. . ." />
                     </children>
                     <padding>
                         <Insets right="10.0" />

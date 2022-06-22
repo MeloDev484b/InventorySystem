@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static java.lang.Character.isAlphabetic;
+
 /*
 The Inventory class is used to view and interact with the ObservableLists allParts and allProducts.
 Objects in allParts and allProducts can be added, deleted, and modified by the user.
@@ -84,16 +87,18 @@ public class Inventory implements Initializable {
         productInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
         //Add test Parts to allParts
-        allParts.add(new InHouse(5689, "Screw", 7.99, 10, 1, 20, 6480));
-        allParts.add(new InHouse(1124, "Wedge", 3.88, 15, 1,20, 9785));
-        allParts.add(new Outsourced(7855, "Nut", 1.69, 8, 1, 20, "A Company"));
-        allParts.add(new Outsourced(4567, "Bun", 69.80, 1, 1, 20, "Generic Cola"));
+        allParts.add(new InHouse(995, "Screw", 7.99, 10, 1, 20, 6480));
+        allParts.add(new InHouse(996, "Wedge", 3.88, 15, 1,20, 9785));
+        allParts.add(new Outsourced(997, "Nut", 1.69, 8, 1, 20, "A Company"));
+        allParts.add(new Outsourced(998, "Bun", 9.80, 1, 1, 20, "Generic Cola"));
+        allParts.add(new Outsourced(999, "Bun", 25.40, 17, 1, 20, "Plus-Ultra Cola"));
 
         //Add test Products to allProducts
-        allProducts.add(new Product(3456, "Branch", 17.99, 19, 1, 20));
-        allProducts.add(new Product(3466, "Cheese Wheel", 77.45, 17, 1, 20));
-        allProducts.add(new Product(7688, "Sandwich", 12.44, 9, 1, 20));
-        allProducts.add(new Product(9240, "Shovel", 9.21, 2, 1, 20));
+        allProducts.add(new Product(995, "Branch", 17.99, 19, 1, 20));
+        allProducts.add(new Product(996, "Cheese Wheel", 77.45, 17, 1, 20));
+        allProducts.add(new Product(997, "Sandwich", 12.44, 9, 1, 20));
+        allProducts.add(new Product(998, "Shovel", 9.21, 2, 1, 20));
+        allProducts.add(new Product(999, "Shovel", 23.34, 5, 1, 20));
 
     }
 
@@ -146,7 +151,7 @@ public class Inventory implements Initializable {
     public static ObservableList<Part> lookupPart(String partName) {
         ObservableList<Part> partsByName = FXCollections.observableArrayList();
         for (Part part : allParts) {
-            if (part.getName().equalsIgnoreCase(partName)) {
+            if (part.getName().toLowerCase().contains(partName.toLowerCase())) {
                 partsByName.add(part);
             }
         }
@@ -166,7 +171,7 @@ public class Inventory implements Initializable {
     public ObservableList<Product> lookupProduct(String productName) {
         ObservableList<Product> productsByName = FXCollections.observableArrayList();
         for (Product product : allProducts) {
-            if (product.getName().equalsIgnoreCase(productName)) {
+            if (product.getName().toLowerCase().contains(productName.toLowerCase())) {
                 productsByName.add(product);
             }
         }
@@ -340,19 +345,70 @@ public class Inventory implements Initializable {
         return true;
     }
 
+    public static boolean doubleCheck(String checkMe) {
+        if (checkMe == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(checkMe);
+        }
+        catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean stringCheck(String checkMe) {
+        if (checkMe == null || checkMe == "") {
+            return false;
+        }
+        if (isAlphabetic(checkMe.charAt(0))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private void showInfoMessage() {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        if (selectedPart != null) {
+            info.setContentText(selectedPart.getName() + " was not deleted.");
+        }
+        else if (selectedProduct != null){
+            info.setContentText(selectedProduct.getName() + " was not deleted.");
+        }
+        info.show();
+    }
+
+    private void selectBeforeDeleteWarning(int warningType) {
+        Alert deleteWarning = new Alert(Alert.AlertType.WARNING);
+        if (warningType == 0) {
+            deleteWarning.setContentText("Select a part to delete.");
+        }
+        else {
+            deleteWarning.setContentText("Select a product to delete.");
+        }
+        deleteWarning.show();
+    }
+
     // fxml methods
     /*
     Calls setSelectedPart() when the user clicks on the PartsTableView.
     */
     public void onPartsTableViewClick(MouseEvent mouseEvent) {
-        setSelectedPart();
+        if (!partsTableView.getSelectionModel().isEmpty()) {
+            setSelectedPart();
+        }
     }
 
     /*
     Calls setSelectedProduct() when the user clicks on the ProductsTableView.
     */
     public void onProductsTableViewClick(MouseEvent mouseEvent) {
-        setSelectedProduct();
+        if (!productsTableView.getSelectionModel().isEmpty()) {
+            setSelectedProduct();
+        }
     }
 
     /*
@@ -387,14 +443,20 @@ public class Inventory implements Initializable {
             confirmation.setContentText("Please confirm deletion of " + selectedPart.getName() + ".");
             Optional<ButtonType> result = confirmation.showAndWait();
             if(!result.isPresent()) {
+                showInfoMessage();
                 selectedPart = null;
             }
             else if(result.get() == ButtonType.OK) {
                 deletePart(selectedPart);
-            }
-            else if(result.get() == ButtonType.CANCEL) {
                 selectedPart = null;
             }
+            else if(result.get() == ButtonType.CANCEL) {
+                showInfoMessage();
+                selectedPart = null;
+            }
+        }
+        else {
+            selectBeforeDeleteWarning(0);
         }
     }
 
@@ -403,18 +465,32 @@ public class Inventory implements Initializable {
     */
     public void onDeleteProductButton(ActionEvent actionEvent) {
         if (selectedProduct != null) {
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setContentText("Please confirm deletion of " + selectedProduct.getName() + ".");
-            Optional<ButtonType> result = confirmation.showAndWait();
-            if(!result.isPresent()) {
+            if (selectedProduct.getAllAssociatedParts().size() > 0) {
+                Alert associatedPartWarning = new Alert(Alert.AlertType.WARNING);
+                associatedPartWarning.setContentText("Remove associated parts before deleting " + selectedProduct.getName() + ".");
+                associatedPartWarning.show();
                 selectedProduct = null;
             }
-            else if(result.get() == ButtonType.OK) {
-                deleteProduct(selectedProduct);
+            else {
+                Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+                confirmation.setContentText("Please confirm deletion of " + selectedProduct.getName() + ".");
+                Optional<ButtonType> result = confirmation.showAndWait();
+                if(!result.isPresent()) {
+                    showInfoMessage();
+                    selectedProduct = null;
+                }
+                else if(result.get() == ButtonType.OK) {
+                    deleteProduct(selectedProduct);
+                    selectedProduct = null;
+                }
+                else if(result.get() == ButtonType.CANCEL) {
+                    showInfoMessage();
+                    selectedProduct = null;
+                }
             }
-            else if(result.get() == ButtonType.CANCEL) {
-                selectedProduct = null;
-            }
+        }
+        else {
+            selectBeforeDeleteWarning(1);
         }
     }
 
@@ -423,7 +499,6 @@ public class Inventory implements Initializable {
     */
     public void onModifyPartButton(ActionEvent actionEvent) throws IOException {
         if (selectedPart != null) {
-            System.out.println("Modify part button pressed");
             FXMLLoader loadModifyPart = new FXMLLoader(getClass().getResource("/view/ModifyPart.fxml"));
             Parent root = loadModifyPart.load();
             modifyPartScene = new Scene(root);
@@ -431,7 +506,9 @@ public class Inventory implements Initializable {
             modifyPartStage.show();
         }
         else {
-            System.out.println("Select a part first");
+            Alert selectPartWarning = new Alert(Alert.AlertType.WARNING);
+            selectPartWarning.setContentText("Please select a part to modify.");
+            selectPartWarning.show();
         }
     }
 
@@ -448,7 +525,9 @@ public class Inventory implements Initializable {
             modifyProductStage.show();
         }
         else {
-            System.out.println("Select a product first");
+            Alert selectProductWarning = new Alert(Alert.AlertType.WARNING);
+            selectProductWarning.setContentText("Please select a product to modify.");
+            selectProductWarning.show();
         }
     }
 
@@ -465,7 +544,7 @@ public class Inventory implements Initializable {
     the results of lookupPart().
     */
     public void onSearchPartsTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
+        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || searchPartsTextField.getText() == "") {
             if (intCheck(searchPartsTextField.getText())) {
                 int partInt = Integer.parseInt(searchPartsTextField.getText());
                 partsTableView.setItems(partById(lookupPart(partInt)));
@@ -481,7 +560,7 @@ public class Inventory implements Initializable {
     the results of lookupProduct().
     */
     public void onSearchProductsTextField(KeyEvent keyEvent) {
-        if (keyEvent.getCode() == KeyCode.ENTER) {
+        if (keyEvent.getCode() == KeyCode.ENTER || keyEvent.getCode() == KeyCode.BACK_SPACE || searchPartsTextField.getText() == "") {
             if (intCheck(searchProductsTextField.getText())) {
                 int productInt = Integer.parseInt(searchProductsTextField.getText());
                 productsTableView.setItems(productById(lookupProduct(productInt)));
